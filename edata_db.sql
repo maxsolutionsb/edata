@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50733
 File Encoding         : 65001
 
-Date: 2022-05-27 23:35:59
+Date: 2022-06-11 00:02:22
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -107,6 +107,49 @@ INSERT INTO `tbl_negeri` VALUES ('15', '15', 'W.P. Labuan', 'Aktif');
 INSERT INTO `tbl_negeri` VALUES ('16', '16', 'W.P. Putrajaya', 'Aktif');
 
 -- ----------------------------
+-- Table structure for `tbl_pengguna`
+-- ----------------------------
+DROP TABLE IF EXISTS `tbl_pengguna`;
+CREATE TABLE `tbl_pengguna` (
+  `user_id` int(6) NOT NULL AUTO_INCREMENT,
+  `user_nama` varchar(255) NOT NULL,
+  `user_nokp` varchar(12) NOT NULL,
+  `user_email` varchar(150) NOT NULL,
+  `user_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1-Aktif; 2-Tidak Aktif',
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of tbl_pengguna
+-- ----------------------------
+INSERT INTO `tbl_pengguna` VALUES ('1', 'Pentadbir', '8888', 'emel@emel.com', '1');
+INSERT INTO `tbl_pengguna` VALUES ('2', 'Nama JK', '9999', 'emel1@emel.com', '1');
+INSERT INTO `tbl_pengguna` VALUES ('3', 'Nama Guru ICT', '1111', 'emel2@emel.com', '1');
+
+-- ----------------------------
+-- Table structure for `tbl_pengguna_role`
+-- ----------------------------
+DROP TABLE IF EXISTS `tbl_pengguna_role`;
+CREATE TABLE `tbl_pengguna_role` (
+  `pengguna_role_id` int(6) NOT NULL AUTO_INCREMENT,
+  `pr_user_id` int(6) NOT NULL,
+  `pr_ppd_id` int(4) NOT NULL,
+  `pr_role` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1-Pengguna; 2-JK, 3-Guru ICT',
+  `pr_mula` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `pr_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1-Aktif; 2-Tidak Aktif',
+  `pr_ubah` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`pengguna_role_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of tbl_pengguna_role
+-- ----------------------------
+INSERT INTO `tbl_pengguna_role` VALUES ('1', '1', '1000', '1', '2022-06-10 23:19:47', '1', '2022-06-10 23:20:16');
+INSERT INTO `tbl_pengguna_role` VALUES ('2', '2', '1000', '2', '2022-06-10 23:20:39', '1', '2022-06-10 23:20:39');
+INSERT INTO `tbl_pengguna_role` VALUES ('3', '1', '1001', '1', '2022-06-10 23:20:50', '1', '2022-06-10 23:20:50');
+INSERT INTO `tbl_pengguna_role` VALUES ('4', '1', '1002', '1', '2022-06-10 23:21:00', '1', '2022-06-10 23:21:00');
+
+-- ----------------------------
 -- Table structure for `tbl_ppd`
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_ppd`;
@@ -128,6 +171,24 @@ CREATE TABLE `tbl_ppd` (
 INSERT INTO `tbl_ppd` VALUES ('1000', 'BANGSAR PUDU', 'Alamat', null, null, '56000', '1000', '14');
 INSERT INTO `tbl_ppd` VALUES ('1001', 'KERAMAT', 'Alamat', null, null, '56000', '1000', '14');
 INSERT INTO `tbl_ppd` VALUES ('1002', 'SENTUL', 'Alamat', null, null, '56000', '1000', '14');
+
+-- ----------------------------
+-- Table structure for `tbl_role`
+-- ----------------------------
+DROP TABLE IF EXISTS `tbl_role`;
+CREATE TABLE `tbl_role` (
+  `role_id` int(2) NOT NULL AUTO_INCREMENT,
+  `role_nama` varchar(150) NOT NULL,
+  `role_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1-Aktif; 2-Tidak Aktif',
+  PRIMARY KEY (`role_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of tbl_role
+-- ----------------------------
+INSERT INTO `tbl_role` VALUES ('1', 'Pentadbir', '1');
+INSERT INTO `tbl_role` VALUES ('2', 'Juruteknik', '1');
+INSERT INTO `tbl_role` VALUES ('3', 'Guru ICT', '1');
 
 -- ----------------------------
 -- Table structure for `tbl_sekolah`
@@ -156,8 +217,7 @@ CREATE TABLE `tbl_sekolah` (
 -- ----------------------------
 -- Records of tbl_sekolah
 -- ----------------------------
-INSERT INTO `tbl_sekolah` VALUES ('10000594', 'WBA0002', '1000', 'SEKOLAH KEBANGSAAN SULTAN HISAMUDDIN ALAM SHAH', 'SK', 'TIDAK', 'Bandar', 'wba0002@moe.edu.my', 'JALAN SULTAN SALAHUDDIN 50480 KUALA LUMPUR', null, null, '', '100000', '14', '0326925164', '1');
-INSERT INTO `tbl_sekolah` VALUES ('10000595', 'WBA0003', '1000', 'SEKOLAH KEBANGSAAN JALAN PASAR 1', 'SK', 'TIDAK', 'Bandar', 'wba0003@moe.edu.my', 'JALAN RUSA 55100 KUALA LUMPUR', null, null, '', '100000', '14', '0392218019', '1');
+INSERT INTO `tbl_sekolah` VALUES ('10000595', 'WBA0003', '1000', 'SEKOLAH KEBANGSAAN JALAN PASAR 1', 'SK', 'TIDAK', 'Bandar', 'wba0003@moe.edu.my', 'JALAN RUSA ', '', '', '55100', '100000', '14', '0392218019', '1');
 INSERT INTO `tbl_sekolah` VALUES ('10000596', 'WBA0005', '1000', 'SEKOLAH KEBANGSAAN TUN HUSSEIN ONN', 'SK', 'TIDAK', 'Bandar', 'wba0005@moe.edu.my', 'JLN DUA, KG PANDAN 55100 KUALA LUMPUR', null, null, '', '100000', '14', '0392842316', '1');
 INSERT INTO `tbl_sekolah` VALUES ('10000597', 'WBA0011', '1000', 'SEKOLAH KEBANGSAAN BUKIT BANDARAYA', 'SK', 'TIDAK', 'Bandar', 'wba0011@moe.edu.my', 'JALAN BANGKUNG, BANGSAR 59100 KUALA LUMPUR', null, null, '', '100000', '14', '0320950162', '1');
 INSERT INTO `tbl_sekolah` VALUES ('10000598', 'WBA0012', '1000', 'SEKOLAH KEBANGSAAN BANGSAR', 'SK', 'TIDAK', 'Bandar', 'wba0012@moe.edu.my', 'JALAN PANTAI BHARU 59200 KUALA LUMPUR', null, null, '', '100000', '14', '0322824990', '1');
