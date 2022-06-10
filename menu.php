@@ -19,7 +19,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="sekolah_list.php" class="nav-link">
+            <a href="fasiliti_sekolah.php" class="nav-link">
               <i class="nav-icon fas fa-tools"></i>
               <p>
                 Fasiliti Sekolah
@@ -75,7 +75,7 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-user"></i>
               <p>
-                Akuan Pengguna
+                Akaun Pengguna
               </p>
             </a>
           </li>

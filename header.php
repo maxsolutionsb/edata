@@ -17,6 +17,11 @@
 
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  <style>
+    .table-condensed{
+      font-size: 10px;
+    }
+  </style>
 
 </head>
 <body class="hold-transition sidebar-mini">

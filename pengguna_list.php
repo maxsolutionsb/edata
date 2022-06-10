@@ -4,18 +4,18 @@ include 'utiliti/data.php';
 
 $list = new data();
 $list->select("
-tbl_sekolah
-INNER JOIN tbl_ppd ON tbl_sekolah.sek_ppd_id = tbl_ppd.ppd_id",
-"tbl_sekolah.sekolah_id,
-tbl_sekolah.sek_kod,
-tbl_sekolah.sek_nama,
+tbl_pengguna
+INNER JOIN tbl_pengguna_role ON tbl_pengguna.user_id = tbl_pengguna_role.pr_user_id
+INNER JOIN tbl_ppd ON tbl_pengguna_role.pr_ppd_id = tbl_ppd.ppd_id
+INNER JOIN tbl_role ON tbl_pengguna_role.pr_role = tbl_role.role_id" ,
+"tbl_pengguna.user_id,
+tbl_pengguna.user_nama,
 tbl_ppd.ppd_nama,
-tbl_sekolah.sek_jenis");
-$sekolah = $list->sql;
+tbl_role.role_nama,
+tbl_pengguna_role.pr_mula,
+tbl_pengguna_role.pr_status ");
+$user = $list->sql;
 
-$lsjenis = new data();
-$lsjenis->select("tbl_jenis_sekolah");
-$jenis = $lsjenis->sql;
 ?>
   <!-- SweetAlert2 -->
   <link rel="stylesheet" href="plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
@@ -28,12 +28,12 @@ $jenis = $lsjenis->sql;
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Senarai Sekolah</h1>
+            <h1>Senarai Pengguna</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Sekolah</li>
+              <li class="breadcrumb-item active">Pengguna</li>
             </ol>
           </div>
         </div>
@@ -51,30 +51,35 @@ $jenis = $lsjenis->sql;
         <table id="example1" class="table table-bordered table-striped">
           <thead>
           <tr>
-              <th>Kod</th>
-              <th>Sekolah</th>
-              <th>Jenis</th>
+              <th>No.</th>
+              <th>Nama</th>
+              <th>Peranan</th>
               <th>PPD</th>
+              <th>Status</th>
               <th>#</th>
           </tr>
           </thead>
           <tbody>
       <?php
-        while($row = mysqli_fetch_assoc($sekolah)){
+        $num = 1;
+        while($row = mysqli_fetch_assoc($user)){
       ?>
         <tr>
-            <td><?php echo $row['sek_kod']; ?></td>
-            <td><?php echo $row['sek_nama']; ?></td>
-            <td><?php echo $row['sek_jenis']; ?></td>
+            <td><?php echo $num++; ?></td>
+            <td><?php echo $row['user_nama']; ?></td>
+            <td><?php echo $row['role_nama']; ?></td>
             <td><?php echo $row['ppd_nama']; ?></td>
+            <td><?php
+            if($row['pr_status']==1)
+                echo 'Aktif';
+            else
+                echo 'Tidak Aktif';
+            ?></td>
             <td>
-              <a href="fasiliti_sekolah.php" id="<?php echo $row['sekolah_id']; ?>" class="btn btn-xs btn-success" title="Fasiliti">
-                  <i class="fas fa-cogs"></i>
-              </a>
-              <a href="#" id="<?php echo $row['sekolah_id']; ?>" class="btn btn-xs btn-info edit_data" title="Kemaskini">
+              <a href="#" id="<?php echo $row['user_id']; ?>" class="btn btn-xs btn-info edit_data" title="Kemaskini">
                   <i class="fas fa-edit"></i>
               </a>
-              <a href="#" id="<?php echo $row['sekolah_id']; ?>" class="btn btn-xs btn-danger del_data" title="Padam">
+              <a href="#" id="<?php echo $row['user_id']; ?>" class="btn btn-xs btn-danger del_data" title="Padam">
                   <i class="fas fa-trash"></i>
               </a>
             </td>
