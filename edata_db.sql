@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50733
 File Encoding         : 65001
 
-Date: 2022-06-11 00:02:22
+Date: 2022-06-19 23:46:50
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -516,14 +516,15 @@ INSERT INTO `tbl_sekolah` VALUES ('10000887', 'WRA0004', '1002', 'SMA KUALA LUMP
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_sekolah_fasiliti`;
 CREATE TABLE `tbl_sekolah_fasiliti` (
-  `fasiliti_id` int(8) NOT NULL,
+  `fasiliti_id` int(8) NOT NULL AUTO_INCREMENT,
   `fas_sek_id` int(8) NOT NULL,
   `fas_jenis` varchar(150) NOT NULL,
   `fas_kuantiti` int(2) NOT NULL,
   `fas_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1-Aktif; 2-Tidak Aktif',
   PRIMARY KEY (`fasiliti_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of tbl_sekolah_fasiliti
 -- ----------------------------
+INSERT INTO `tbl_sekolah_fasiliti` VALUES ('1', '10000595', 'Bilik Komputer', '3', '1');
