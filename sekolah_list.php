@@ -43,7 +43,7 @@ $jenis = $lsjenis->sql;
     <section class="content">
       <div class="container-fluid">
       <div class="table-responsive">  
-        <div align="right">  
+        <div class="text-right">  
             <button type="button" name="add" id="add" class="btn btn-success">Tambah</button>  
         </div>  
         <br />
@@ -68,7 +68,7 @@ $jenis = $lsjenis->sql;
             <td><?php echo $row['sek_jenis']; ?></td>
             <td><?php echo $row['ppd_nama']; ?></td>
             <td>
-              <a href="fasiliti_sekolah.php" id="<?php echo $row['sekolah_id']; ?>" class="btn btn-xs btn-success" title="Fasiliti">
+              <a href="fasiliti_sekolah.php?uk=<?php echo $row['sekolah_id']; ?>" class="btn btn-xs btn-success" title="Fasiliti">
                   <i class="fas fa-cogs"></i>
               </a>
               <a href="#" id="<?php echo $row['sekolah_id']; ?>" class="btn btn-xs btn-info edit_data" title="Kemaskini">
