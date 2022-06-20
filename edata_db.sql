@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50733
 File Encoding         : 65001
 
-Date: 2022-06-20 17:16:19
+Date: 2022-06-20 23:17:57
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -37,17 +37,20 @@ INSERT INTO `tbl_daerah` VALUES ('100000', '1401', 'Kuala Lumpur', 'Aktif');
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_internet_interim`;
 CREATE TABLE `tbl_internet_interim` (
-  `interim_id` int(6) NOT NULL,
+  `interim_id` int(6) NOT NULL AUTO_INCREMENT,
   `inter_sek_id` int(8) NOT NULL,
+  `inter_bulan` varchar(20) NOT NULL COMMENT 'Jan - Dis',
   `inter_jenis` varchar(50) NOT NULL,
   `inter_kuantiti` int(2) NOT NULL,
+  `inter_file` varchar(255) DEFAULT NULL,
   `inter_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1-Aktif; 2-Tidak Aktif',
   PRIMARY KEY (`interim_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of tbl_internet_interim
 -- ----------------------------
+INSERT INTO `tbl_internet_interim` VALUES ('1', '10000600', 'Januari', 'TM', '3', 'ja2022.pdf', '1');
 
 -- ----------------------------
 -- Table structure for `tbl_jenis_sekolah`
@@ -117,7 +120,7 @@ CREATE TABLE `tbl_pengguna` (
   `user_email` varchar(150) NOT NULL,
   `user_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1-Aktif; 2-Tidak Aktif',
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of tbl_pengguna
@@ -139,7 +142,7 @@ CREATE TABLE `tbl_pengguna_role` (
   `pr_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1-Aktif; 2-Tidak Aktif',
   `pr_ubah` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`pengguna_role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of tbl_pengguna_role
