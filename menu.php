@@ -27,7 +27,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="interim_list.php" class="nav-link">
               <i class="nav-icon fas fa-globe"></i>
               <p>
                 Internet Interim
@@ -43,33 +43,12 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="laporan.php" class="nav-link">
               <i class="nav-icon fas fa-chart-pie"></i>
               <p>
                 Laporan
-                <i class="right fas fa-angle-left"></i>
               </p>
             </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-calendar nav-icon"></i>
-                  <p>Januari</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-calendar nav-icon"></i>
-                  <p>Februari</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-calendar nav-icon"></i>
-                  <p>Mac</p>
-                </a>
-              </li>
-            </ul>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
