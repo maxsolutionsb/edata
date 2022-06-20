@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50733
 File Encoding         : 65001
 
-Date: 2022-06-19 23:46:50
+Date: 2022-06-20 17:16:19
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -117,14 +117,13 @@ CREATE TABLE `tbl_pengguna` (
   `user_email` varchar(150) NOT NULL,
   `user_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1-Aktif; 2-Tidak Aktif',
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of tbl_pengguna
 -- ----------------------------
-INSERT INTO `tbl_pengguna` VALUES ('1', 'Pentadbir', '8888', 'emel@emel.com', '1');
+INSERT INTO `tbl_pengguna` VALUES ('1', 'Pentadbir', '8888', 'emel@emel.com1', '1');
 INSERT INTO `tbl_pengguna` VALUES ('2', 'Nama JK', '9999', 'emel1@emel.com', '1');
-INSERT INTO `tbl_pengguna` VALUES ('3', 'Nama Guru ICT', '1111', 'emel2@emel.com', '1');
 
 -- ----------------------------
 -- Table structure for `tbl_pengguna_role`
@@ -134,20 +133,19 @@ CREATE TABLE `tbl_pengguna_role` (
   `pengguna_role_id` int(6) NOT NULL AUTO_INCREMENT,
   `pr_user_id` int(6) NOT NULL,
   `pr_ppd_id` int(4) NOT NULL,
+  `pr_sekolah_id` int(4) NOT NULL,
   `pr_role` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1-Pengguna; 2-JK, 3-Guru ICT',
   `pr_mula` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `pr_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1-Aktif; 2-Tidak Aktif',
   `pr_ubah` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`pengguna_role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of tbl_pengguna_role
 -- ----------------------------
-INSERT INTO `tbl_pengguna_role` VALUES ('1', '1', '1000', '1', '2022-06-10 23:19:47', '1', '2022-06-10 23:20:16');
-INSERT INTO `tbl_pengguna_role` VALUES ('2', '2', '1000', '2', '2022-06-10 23:20:39', '1', '2022-06-10 23:20:39');
-INSERT INTO `tbl_pengguna_role` VALUES ('3', '1', '1001', '1', '2022-06-10 23:20:50', '1', '2022-06-10 23:20:50');
-INSERT INTO `tbl_pengguna_role` VALUES ('4', '1', '1002', '1', '2022-06-10 23:21:00', '1', '2022-06-10 23:21:00');
+INSERT INTO `tbl_pengguna_role` VALUES ('1', '1', '1002', '10000601', '1', '2022-06-10 23:19:47', '1', '2022-06-20 12:35:51');
+INSERT INTO `tbl_pengguna_role` VALUES ('2', '2', '0', '10000595', '3', '2022-06-10 23:20:39', '1', '2022-06-20 11:46:42');
 
 -- ----------------------------
 -- Table structure for `tbl_ppd`
@@ -518,13 +516,20 @@ DROP TABLE IF EXISTS `tbl_sekolah_fasiliti`;
 CREATE TABLE `tbl_sekolah_fasiliti` (
   `fasiliti_id` int(8) NOT NULL AUTO_INCREMENT,
   `fas_sek_id` int(8) NOT NULL,
+  `fas_nama` varchar(150) DEFAULT NULL,
   `fas_jenis` varchar(150) NOT NULL,
   `fas_kuantiti` int(2) NOT NULL,
   `fas_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1-Aktif; 2-Tidak Aktif',
   PRIMARY KEY (`fasiliti_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of tbl_sekolah_fasiliti
 -- ----------------------------
-INSERT INTO `tbl_sekolah_fasiliti` VALUES ('1', '10000595', 'Bilik Komputer', '3', '1');
+INSERT INTO `tbl_sekolah_fasiliti` VALUES ('1', '10000595', 'BiliK Komputer 1', 'Bilik Komputer', '20', '1');
+INSERT INTO `tbl_sekolah_fasiliti` VALUES ('2', '10000595', 'Bunga Raya CC', 'Pusat Akses', '15', '1');
+INSERT INTO `tbl_sekolah_fasiliti` VALUES ('3', '10000745', 'Bilik Anggerik', 'Bilik Komputer', '20', '1');
+INSERT INTO `tbl_sekolah_fasiliti` VALUES ('4', '10000745', 'Bilik Utama', 'Pusat Akses', '5', '1');
+INSERT INTO `tbl_sekolah_fasiliti` VALUES ('6', '10000806', 'Bilik PC', 'Bilik Komputer', '15', '1');
+INSERT INTO `tbl_sekolah_fasiliti` VALUES ('24', '10000595', 'Bilik Angkasa', 'Makmal Komputer', '50', '1');
+INSERT INTO `tbl_sekolah_fasiliti` VALUES ('25', '10000741', 'Bilik Angkasa', 'Bilik Komputer', '20', '1');

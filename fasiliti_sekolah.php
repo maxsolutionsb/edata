@@ -17,6 +17,15 @@ $list = new data();
 $list->select("tbl_sekolah_fasiliti","*"," fas_sek_id='$sekolah_id' ");
 $fasiliti = $list->sql;
 
+$stat = new data();
+$stat->select("tbl_sekolah_fasiliti",
+"SUM(if(tbl_sekolah_fasiliti.fas_jenis='Bilik Komputer',1,0)) AS bilKomp,
+SUM(if(tbl_sekolah_fasiliti.fas_jenis='Makmal Komputer',1,0)) AS makKomp,
+SUM(if(tbl_sekolah_fasiliti.fas_jenis='Pusat Akses',1,0)) AS pusAkses",
+" fas_sek_id='$sekolah_id' ");
+$statistik = $stat->sql;
+$curstat = mysqli_fetch_assoc($statistik);
+
 //get sekolah info
 $list2 = new data();
 $list2->select("tbl_sekolah
@@ -36,6 +45,10 @@ $sekolah = $list2->sql;
 $rowsek = mysqli_fetch_assoc($sekolah);
 
 ?>
+ <!-- SweetAlert2 -->
+ <link rel="stylesheet" href="plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+  <!-- Toastr -->
+  <link rel="stylesheet" href="plugins/toastr/toastr.min.css">
 
 <!-- Content Header (Page header) -->
 <section class="content-header">
@@ -76,7 +89,7 @@ $rowsek = mysqli_fetch_assoc($sekolah);
                         <div class="info-box bg-light">
                             <div class="info-box-content">
                             <span class="info-box-text text-center text-muted">Bilik Komputer</span>
-                            <span class="info-box-number text-center text-muted mb-0">4</span>
+                            <span class="info-box-number text-center text-muted mb-0"><?php echo $curstat ['bilKomp']; ?></span>
                             </div>
                         </div>
                         </div>
@@ -84,7 +97,7 @@ $rowsek = mysqli_fetch_assoc($sekolah);
                         <div class="info-box bg-light">
                             <div class="info-box-content">
                             <span class="info-box-text text-center text-muted">Maklmal Komputer</span>
-                            <span class="info-box-number text-center text-muted mb-0">2</span>
+                            <span class="info-box-number text-center text-muted mb-0"><?php echo $curstat ['makKomp']; ?></span>
                             </div>
                         </div>
                         </div>
@@ -92,7 +105,7 @@ $rowsek = mysqli_fetch_assoc($sekolah);
                         <div class="info-box bg-light">
                             <div class="info-box-content">
                             <span class="info-box-text text-center text-muted">Pusat Akses</span>
-                            <span class="info-box-number text-center text-muted mb-0">0</span>
+                            <span class="info-box-number text-center text-muted mb-0"><?php echo $curstat ['pusAkses']; ?></span>
                             </div>
                         </div>
                         </div>
@@ -101,16 +114,17 @@ $rowsek = mysqli_fetch_assoc($sekolah);
                         <div class="col-12">
                         <h4>Senarai Fasiliti</h4>
                             <div class="post">
-                                <div class="text-right">  
+                                <div class="text-right mb-3">  
                                     <button type="button" name="add" id="add" class="btn btn-xs btn-success">Tambah</button>  
                                 </div> 
-                                <div id="sekolah_table">
+                                <div id="fasiliti_table">
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                         <tr>
                                             <th  class="text-center" width="5%">No.</th>
-                                            <th width="70%">Jenis</th>
-                                            <th class="text-center" width="10%">Bilangan</th>
+                                            <th width="40%">Keterangan</th>
+                                            <th width="30%">Jenis</th>
+                                            <th class="text-center" width="10%">Bilangan PC</th>
                                             <th class="text-center" width="15%">#</th>
                                         </tr>
                                         </thead>
@@ -122,13 +136,14 @@ $rowsek = mysqli_fetch_assoc($sekolah);
                                         ?>
                                         <tr>
                                             <td class="text-center"><?php echo $bil++; ?></td>
+                                            <td ><?php echo $row['fas_nama']; ?></td>
                                             <td ><?php echo $row['fas_jenis']; ?></td>
                                             <td class="text-center"><?php echo $row['fas_kuantiti']; ?></td>
                                             <td class="text-center">
                                                 <a href="#" id="<?php echo $row['fasiliti_id']; ?>" class="btn btn-xs btn-info edit_data" title="Kemaskini">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <a href="#" id="<?php echo $row['fasiliti_id']; ?>" class="btn btn-xs btn-danger del_data" title="Padam">
+                                                <a href="#" id="<?php echo $row['fasiliti_id'].'&'.$row['fas_sek_id']; ?>" class="btn btn-xs btn-danger del_data" title="Padam">
                                                     <i class="fas fa-trash"></i>
                                                 </a>
                                             </td>
@@ -174,7 +189,7 @@ $rowsek = mysqli_fetch_assoc($sekolah);
 <!-- /.content-wrapper -->
 
 <div class="modal fade" id="add_fasiliti">
-    <div class="modal-dialog modal-sm">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <form class="form-horizontal" action="" method="post" id="insert_form">
           <input type="hidden" name="fasiliti_id" id="fasiliti_id">
@@ -186,6 +201,10 @@ $rowsek = mysqli_fetch_assoc($sekolah);
             </button>
           </div>
           <div class="modal-body">
+          <div class="form-group">
+                <label for="fas_nama" class="form-label">Nama Bilik</label>
+                <input type="text" class="form-control" id="fas_nama" name="fas_nama">
+            </div>
             <div class="form-group">
                 <label for="jenis_fasiliti" class="form-label">Jenis Fasiliti</label>
                 <select class="form-control select2" id="jenis_fasiliti" name="jenis_fasiliti">
@@ -222,6 +241,7 @@ $rowsek = mysqli_fetch_assoc($sekolah);
           </div>
           <div class="modal-body">
             <p>Adakah anda pasti?</p>
+            <input type="hidden" name="del_fas_sek_id" id="del_fas_sek_id">
             <input type="hidden" name="del_fasiliti_id" id="del_fasiliti_id">
             <input type="hidden" name="del_action" value="Padam">
           </div>
@@ -238,6 +258,11 @@ $rowsek = mysqli_fetch_assoc($sekolah);
 <?php 
 include('upper_footer.php');
 ?>
+
+<!-- SweetAlert2 -->
+<script src="plugins/sweetalert2/sweetalert2.min.js"></script>
+<!-- Toastr -->
+<script src="plugins/toastr/toastr.min.js"></script>
 <script>
 $(document).ready(function(){ 
   $('#add').click(function(){  
@@ -248,9 +273,13 @@ $(document).ready(function(){
   
   // DELETE RECORD
   $(document).on('click', '.del_data', function(){ 
-    var fasiliti_id = $(this).attr("id");
+    var iddata = $(this).attr("id");
+    var spltid = iddata.split('&');
+    var fasiliti_id = spltid[0];
+    var fas_sek_id = spltid[1];
     $('#delete_form')[0].reset();    
     $('#del_fasiliti_id').val(fasiliti_id);
+    $('#del_fas_sek_id').val(fas_sek_id);
     $('#padam_fasiliti').modal('show');  
   }); 
   
@@ -264,7 +293,8 @@ $(document).ready(function(){
       dataType: "json",  
       success:function(data){ 
         $('#fasiliti_id').val(data.fasiliti_id);
-        $('#fas_sek_id').val(data.fas_sek_id);  
+        $('#fas_sek_id').val(data.fas_sek_id);
+        $('#fas_nama').val(data.fas_nama);  
         $('#jenis_fasiliti').val(data.fas_jenis);  
         $('#bilangan').val(data.fas_kuantiti);   
         $('#insert').html("Kemaskini");  
@@ -273,10 +303,14 @@ $(document).ready(function(){
     });  
   });  
   $('#insert_form').on("submit", function(event){  
-    event.preventDefault();  
+    event.preventDefault(); 
+    if($('#fas_nama').val() == "")  
+    {  
+      alert("Sila masukkan Nama Fasiliti");  
+    }  
     if($('#jenis_fasiliti').val() == "")  
     {  
-      alert("Sila masukkan Jenis Fasilit");  
+      alert("Sila masukkan Jenis Fasiliti");  
     }  
     else if($('#bilangan').val() == '')  
     {  
@@ -301,11 +335,7 @@ $(document).ready(function(){
         success:function(data){  
           $('#insert_form')[0].reset();  
           $('#add_fasiliti').modal('hide');  
-          $('#sekolah_table').html(data); 
-          $("#example1").DataTable({
-            "responsive": true, "lengthChange": false, "autoWidth": false,
-            "buttons": ["excel", "pdf", "print"]
-          }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+          $('#fasiliti_table').html(data); 
           toastr.success(mesej);
         }  
       });  
@@ -319,7 +349,7 @@ $(document).ready(function(){
       data:$('#delete_form').serialize(),   
       success:function(data){  
         $('#delete_form')[0].reset();  
-        $('#padam_sekolah').modal('hide');  
+        $('#padam_fasiliti').modal('hide');  
         $('#fasiliti_table').html(data);
         toastr.error('Rekod berjaya dipadam');
 

@@ -1,5 +1,6 @@
 <?php  
 include('data.php');
+include 'utiliti/include.php';
 
 if(!empty($_POST)){
     if(isset($_POST['del_action'])){
