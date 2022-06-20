@@ -7,12 +7,14 @@ $list->select("
 tbl_internet_interim
 INNER JOIN tbl_sekolah ON tbl_internet_interim.inter_sek_id = tbl_sekolah.sekolah_id",
 "tbl_internet_interim.interim_id,
-tbl_sekolah.sek_nama");
+tbl_sekolah.sek_nama,
+tbl_internet_interim.inter_bulan,
+tbl_internet_interim.inter_file");
 $interim = $list->sql;
 
-$lsjenis = new data();
-$lsjenis->select("tbl_jenis_sekolah");
-$jenis = $lsjenis->sql;
+// $lsjenis = new data();
+// $lsjenis->select("tbl_jenis_sekolah");
+// $jenis = $lsjenis->sql;
 ?>
   <!-- SweetAlert2 -->
   <link rel="stylesheet" href="plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
@@ -39,53 +41,50 @@ $jenis = $lsjenis->sql;
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-      <div class="table-responsive">  
-        <div class="text-right">  
-            <button type="button" name="add" id="add" class="btn btn-success">Tambah</button>  
-        </div>  
-        <br />
-        <div id="sekolah_table">
-        <table id="example1" class="table table-bordered table-striped">
-          <thead>
-          <tr>
-              <th>Bil.</th>
-              <th>Sekolah</th>
-              <th>Bulan</th>
-              <th>Fail</th>
-              <th>#</th>
-          </tr>
-          </thead>
-          <tbody>
-      <?php
-        $bil=1;
-        while($row = mysqli_fetch_assoc($interim)){
-      ?>
-        <tr>
-            <td><?php echo $bil++; ?></td>
-            <td><?php echo $row['sek_nama']; ?></td>
-            <td><?php echo $row['sek_jenis']; ?></td>
-            <td><?php echo $row['ppd_nama']; ?></td>
-            <td>
-              <a href="fasiliti_sekolah.php?uk=<?php echo $row['sekolah_id']; ?>" class="btn btn-xs btn-success" title="Fasiliti">
-                  <i class="fas fa-cogs"></i>
-              </a>
-              <a href="#" id="<?php echo $row['sekolah_id']; ?>" class="btn btn-xs btn-info edit_data" title="Kemaskini">
-                  <i class="fas fa-edit"></i>
-              </a>
-              <a href="#" id="<?php echo $row['sekolah_id']; ?>" class="btn btn-xs btn-danger del_data" title="Padam">
-                  <i class="fas fa-trash"></i>
-              </a>
-            </td>
-        </tr>
-
-      <?php
-        }
-
-      ?>
-        </tbody>
-        </table>
+        <div class="row">
+        <div class="col-sm-12"> 
+          <div class="text-right">  
+              <button type="button" name="add" id="add" class="btn btn-success">Muat naik</button>  
+          </div>  
+          <br />
+          <div id="interim_table">
+            <table id="example1" class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th width="5%">Bil.</th>
+                  <th width="60%">Sekolah</th>
+                  <th width="10%">Bulan</th>
+                  <th width="15%">Fail</th>
+                  <th width="10%">#</th>
+                </tr>
+              </thead>
+              <tbody>
+              <?php
+                $bil=1;
+                while($row = mysqli_fetch_assoc($interim)){
+              ?>
+                <tr>
+                    <td><?php echo $bil++; ?></td>
+                    <td><?php echo $row['sek_nama']; ?></td>
+                    <td><?php echo $row['inter_bulan']; ?></td>
+                    <td><?php echo $row['inter_file']; ?></td>
+                    <td>
+                      <a href="#" id="<?php echo $row['interim_id']; ?>" class="btn btn-xs btn-info edit_data" title="Kemaskini">
+                          <i class="fas fa-edit"></i>
+                      </a>
+                      <a href="#" id="<?php echo $row['interim_id']; ?>" class="btn btn-xs btn-danger del_data" title="Padam">
+                          <i class="fas fa-trash"></i>
+                      </a>
+                    </td>
+                </tr>
+              <?php
+                }
+              ?>
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
+        </div>
         <!-- /.row -->
       </div><!-- /.container-fluid -->
     </section>
@@ -99,7 +98,7 @@ $jenis = $lsjenis->sql;
       <div class="modal-content">  
         <div class="modal-header">  
           <button type="button" class="close" data-dismiss="modal">&times;</button>  
-          <h4 class="modal-title">Maklumat Sekolah</h4>  
+          <h4 class="modal-title">Maklumat Interim</h4>  
         </div>  
         <div class="modal-body" id="school_details">  
         </div>  
@@ -110,119 +109,66 @@ $jenis = $lsjenis->sql;
     </div>  
   </div> 
 
-  <div class="modal fade" id="add_sekolah">
+  <div class="modal fade" id="add_interim">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <form class="form-horizontal" action="" method="post" id="insert_form">
-          <input type="hidden" name="sekolah_id" id="sekolah_id">
+          <input type="hidden" name="interim_id" id="interim_id">
           <div class="modal-header">
-            <h4 class="modal-title">Tambah Maklumat Sekolah</h4>
+            <h4 class="modal-title">Muat naik Maklumat Interim</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
-            <div class="form-group row">
-              <label for="kod_sekolah" class="col-sm-2 col-form-label">Kod</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control" id="kod_sekolah" name="kod_sekolah" placeholder="Kod Sekolah">
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="inter_bulan" class="col-sm-2 col-form-label">Bulan</label>            
+                  <select class="form-control select2" id="inter_bulan" name="inter_bulan" style="width: 100%;">
+                    <option selected="selected" value="">--Sila  pilih--</option>
+                    <option value="Januari">Januari</option>
+                    <option value="Februari">Februari</option>
+                    <option value="Mac">Mac</option>
+                    <option value="April">April</option>
+                    <option value="Mei">Mei</option>
+                    <option value="Jun">Jun</option>
+                    <option value="Julai">Julai</option>
+                    <option value="Ogos">Ogos</option>
+                    <option value="September">September</option>
+                    <option value="Oktober">Oktober</option>
+                    <option value="November">November</option>
+                    <option value="Disember">Disember</option>
+                  </select>
+                </div>
               </div>
-            </div>
-            <div class="form-group row">
-              <label for="nama_sekolah" class="col-sm-2 col-form-label">Nama</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control" id="nama_sekolah" name="nama_sekolah" placeholder="Nama Sekolah">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="inter_jenis" class="col-sm-2 col-form-label">Jenis</label>            
+                  <select class="form-control select2" id="inter_jenis" name="inter_jenis" style="width: 100%;">
+                    <option selected="selected" value="">--Sila  pilih--</option>
+                    <option value="Celcom">Celcom</option>
+                    <option value="Maxis">Maxis</option>
+                    <option value="TM">TM</option>
+                  </select>
+                </div>
               </div>
-            </div>
-            <div class="form-group row">
-              <label for="no_telefon" class="col-sm-2 col-form-label">Jenis Sekolah</label>
-              <div class="col-sm-4">
-                <select class="form-control select2" id="jenis" name="jenis" style="width: 100%;">
-                  <option selected="selected" value="">--Sila  pilih--</option>
-                  <?php
-                  while($row = mysqli_fetch_assoc($jenis)){
-                    echo '<option value="'.$row['jenis'].'">'.$row['jenis'].'</option>';
-                  }
-                  ?>
-                </select>
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label for="exampleInputFile">Fail</label>
+                  <div class="input-group">
+                    <div class="custom-file">
+                      <input type="file" name="inter_file" class="custom-file-input" id="inter_file">
+                      <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <label for="alamat_baris1" class="col-sm-2 col-form-label">PTJ</label>
-              <div class="col-sm-4">
-                <select class="form-control select2" id="ptj" name="ptj" style="width: 100%;">
-                  <option selected="selected" value="">--Sila  pilih--</option>
-                  <option value="YA">Ya</option>
-                  <option value="TIDAK">Tidak</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="alamat_baris1" class="col-sm-2 col-form-label">Lokasi</label>
-              <div class="col-sm-10">
-                <select class="form-control select2" id="lokasi" name="lokasi" style="width: 100%;">
-                  <option selected="selected" value="">--Sila  pilih--</option>
-                  <option value="Bandar">Bandar</option>
-                  <option value="Luar Bandar">Luar Bandar</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="alamat_baris1" class="col-sm-2 col-form-label">Alamat</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control" id="alamat_baris1" name="alamat_baris1" placeholder="Baris 1">
-              </div>
-              <label for="alamat_baris2" class="col-sm-2 col-form-label"></label>
-              <div class="col-sm-10 mt-1">
-                <input type="text" class="form-control" id="alamat_baris2" name="alamat_baris2" placeholder="Baris 2">
-              </div>
-              <label for="alamat_baris3" class="col-sm-2 col-form-label"></label>
-              <div class="col-sm-10 mt-1">
-                <input type="text" class="form-control" id="alamat_baris3" name="alamat_baris3" placeholder="Baris 3">
-              </div>
-              <label for="poskod" class="col-sm-2 col-form-label"></label>
-              <div class="col-sm-5 mt-1">
-                <input type="text" class="form-control" id="poskod" name="poskod" placeholder="Poskod">
-              </div>                
-              <div class="col-sm-5 mt-1">
-                <select class="form-control select2" id="daerah" name="daerah" style="width: 100%;">
-                  <option selected="selected">--Sila  pilih Bandar--</option>
-                  <option value="100000">Kuala Lumpur</option>>
-                </select>
-              </div>
-              <label for="inputName2" class="col-sm-2 col-form-label"></label>
-              <div class="col-sm-5 mt-1">
-                <select class="form-control select2" id="negeri" name="negeri" style="width: 100%;">
-                  <option selected="selected">--Sila  pilih negeri--</option>
-                  <option value="14">W.P. Kuala Lumpur</option>
-                </select>
-              </div>                
-            </div>
-            <div class="form-group row">
-              <label for="no_telefon" class="col-sm-2 col-form-label">PPD</label>
-              <div class="col-sm-10">
-                <select class="form-control select2" id="ppd" name="ppd" style="width: 100%;">
-                  <option selected="selected" value="">--Sila  pilih PPD--</option>
-                  <option value="1000">PPD Bangsar Pudu</option>
-                  <option value="1001">PPD Keramat</option>
-                  <option value="1002">PPD Sentul</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="no_telefon" class="col-sm-2 col-form-label">No Telefon</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control" id="no_telefon" name="no_telefon" placeholder="No Telefon Sekolah">
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="emel" class="col-sm-2 col-form-label">E-Mel</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control" id="emel" name="emel" placeholder="E-Mel Sekolah">
-              </div>
-            </div>
+            </div> 
           </div>
           <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-            <button type="submit" class="btn btn-danger" id="insert">Simpan</button>
+            <button type="submit" class="btn btn-danger" id="insert">Muat naik</button>
           </div> 
         </form>
       </div>
@@ -231,7 +177,7 @@ $jenis = $lsjenis->sql;
     <!-- /.modal-dialog -->
   </div>
 
-  <div class="modal fade" id="padam_sekolah">
+  <div class="modal fade" id="padam_interim">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
         <form class="form-horizontal" action="" method="post" id="delete_form">
@@ -243,7 +189,7 @@ $jenis = $lsjenis->sql;
           </div>
           <div class="modal-body">
             <p>Adakah anda pasti?</p>
-            <input type="hidden" name="del_sekolah_id" id="del_sekolah_id">
+            <input type="hidden" name="del_interim_id" id="del_interim_id">
             <input type="hidden" name="del_action" value="Padam">
           </div>
           <div class="modal-footer justify-content-between">
@@ -272,103 +218,73 @@ $jenis = $lsjenis->sql;
 <script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
+<!-- bs-custom-file-input -->
+<script src="plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
 <!-- SweetAlert2 -->
 <script src="plugins/sweetalert2/sweetalert2.min.js"></script>
 <!-- Toastr -->
 <script src="plugins/toastr/toastr.min.js"></script>
 <script>
+$(function () {
+  bsCustomFileInput.init();
+});
 $(document).ready(function(){ 
   $('#add').click(function(){  
     $('#insert').html("Tambah");  
     $('#insert_form')[0].reset(); 
-    $('#add_sekolah').modal('show');  
+    $('#add_interim').modal('show');  
   });
   
   // DELETE RECORD
   $(document).on('click', '.del_data', function(){ 
     var sekolah_id = $(this).attr("id");
     $('#delete_form')[0].reset();    
-    $('#del_sekolah_id').val(sekolah_id);
-    $('#padam_sekolah').modal('show');  
+    $('#del_interim_id').val(interim_id);
+    $('#padam_interim').modal('show');  
   }); 
   
   $(document).on('click', '.edit_data', function(){  
-    var sekolah_id = $(this).attr("id");  
-    // alert(sekolah_id);
+    var interim_id = $(this).attr("id");  
+    // alert(interim_id);
     $.ajax({  
-      url:"utiliti/data_sekolah.php",  
+      url:"utiliti/data_interim.php",  
       method:"POST",  
-      data:{sekolah_id:sekolah_id},  
+      data:{interim_id:interim_id},  
       dataType: "json",  
       success:function(data){ 
-        $('#sekolah_id').val(data.sekolah_id); 
-        $('#kod_sekolah').val(data.sek_kod);  
-        $('#nama_sekolah').val(data.sek_nama);  
-        $('#jenis').val(data.sek_jenis);  
-        $('#ptj').val(data.sek_ptj);  
-        $('#lokasi').val(data.sek_lokasi);  
-        $('#alamat_baris1').val(data.sek_alamat1); 
-        $('#alamat_baris2').val(data.sek_alamat2); 
-        $('#alamat_baris3').val(data.sek_alamat3);  
-        $('#poskod').val(data.sek_poskod); 
-        $('#daerah').val(data.sek_daerah_id); 
-        $('#negeri').val(data.sek_negeri_id); 
-        $('#ppd').val(data.sek_ppd_id); 
-        $('#no_telefon').val(data.sek_phone); 
-        $('#emel').val(data.sek_emel); 
+        $('#interim_id').val(data.interim_id); 
+        $('#inter_bulan').val(data.inter_bulan);  
+        $('#inter_file').val(data.inter_file);  
+        $('#inter_jenis').val(data.inter_jenis);  
         $('#insert').html("Kemaskini");  
-        $('#add_sekolah').modal('show');  
+        $('#add_interim').modal('show');  
       }  
     });  
   });  
   $('#insert_form').on("submit", function(event){  
     event.preventDefault();  
-    if($('#kod_sekolah').val() == "")  
+    if($('#inter_bulan').val() == "")  
     {  
-      alert("Sila masukkan Kod Sekolah");  
+      alert("Sila pilih bulan");  
     }  
-    else if($('#nama_sekolah').val() == '')  
+    else if($('#inter_file').val() == '')  
     {  
-      alert("Sila masukkan Nama Sekolah");  
+      alert("Sila pilih fail");  
     }  
-    else if($('#jenis').val() == '')  
+    else if($('#inter_jenis').val() == '')  
     {  
-      alert("Sila pilih Jenis Sekolah");  
-    }  
-    else if($('#ptj').val() == '')  
-    {  
-      alert("Adakah Sekolah sebagai PTJ?");  
-    }
-    else if($('#lokasi').val() == '')  
-    {  
-      alert("Sila pilih Lokasi?");  
-    }
-    else if($('#alamat_baris1').val() == '')  
-    {  
-      alert("Sila masukkan sekurang-kurangnya alamat baris 1");  
+      alert("Sila pilih Jenis");  
     } 
-    else if($('#daerah').val() == '')  
-    {  
-      alert("Sila pilih Daerah");  
-    }
-    else if($('#negeri').val() == '')  
-    {  
-      alert("Sila pilih Negeri");  
-    }
-    else if($('#ppd').val() == '')  
-    {  
-      alert("Sila pilih PPD");  
-    }   
     else  
     {  
       $.ajax({  
-        url:"utiliti/sekolah_controller.php",  
+        url:"utiliti/interim_controller.php",  
         method:"POST",  
         data:$('#insert_form').serialize(),
         beforeSend:function(data){  
-          $('#insert').html("Tambah");
+          $('#insert').html("Muat naik");
           if(data.sekolah_id==''){
-            mesej = 'Rekod berjaya ditambah';
+            mesej = 'Rekod berjaya dimuat naik';
           }
           else{
             mesej = 'Rekod berjaya dikemaskini';
@@ -376,8 +292,8 @@ $(document).ready(function(){
         },  
         success:function(data){  
           $('#insert_form')[0].reset();  
-          $('#add_sekolah').modal('hide');  
-          $('#sekolah_table').html(data); 
+          $('#add_interim').modal('hide');  
+          $('#interim_table').html(data); 
           $("#example1").DataTable({
             "responsive": true, "lengthChange": false, "autoWidth": false,
             "buttons": ["excel", "pdf", "print"]
@@ -390,13 +306,13 @@ $(document).ready(function(){
   $('#delete_form').on("submit", function(event){  
     event.preventDefault();   
     $.ajax({  
-      url:"utiliti/sekolah_controller.php",  
+      url:"utiliti/interim_controller.php",  
       method:"POST",  
       data:$('#delete_form').serialize(),   
       success:function(data){  
         $('#delete_form')[0].reset();  
-        $('#padam_sekolah').modal('hide');  
-        $('#sekolah_table').html(data);
+        $('#padam_interim').modal('hide');  
+        $('#interim_table').html(data);
         $("#example1").DataTable({
           "responsive": true, "lengthChange": false, "autoWidth": false,
           "buttons": ["excel", "pdf", "print"]
@@ -405,23 +321,7 @@ $(document).ready(function(){
 
       }  
     });   
-  });
-  $(document).on('click', '.view_data', function(){  
-    var employee_id = $(this).attr("id");  
-    if(employee_id != '')  
-    {  
-      $.ajax({  
-        url:"select.php",  
-        method:"POST",  
-        data:{employee_id:employee_id},  
-        success:function(data){  
-          $('#employee_detail').html(data);  
-          $('#dataModal').modal('show');  
-        }  
-      });  
-    }            
-  }); 
-   
+  });   
 });  
 </script>
 
