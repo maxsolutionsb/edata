@@ -51,10 +51,10 @@ $interim = $list->sql;
             <table id="example1" class="table table-bordered table-striped">
               <thead>
                 <tr>
-                  <th width="5%">Bil.</th>
-                  <th width="60%">Sekolah</th>
-                  <th width="10%">Bulan</th>
-                  <th width="15%">Fail</th>
+                  <th width="5%" class="text-center">Bil.</th>
+                  <th width="55%">Sekolah</th>
+                  <th width="10%" class="text-center">Bulan</th>
+                  <th width="20%">Fail</th>
                   <th width="10%">#</th>
                 </tr>
               </thead>
@@ -64,10 +64,10 @@ $interim = $list->sql;
                 while($row = mysqli_fetch_assoc($interim)){
               ?>
                 <tr>
-                    <td><?php echo $bil++; ?></td>
+                    <td class="text-center"><?php echo $bil++; ?></td>
                     <td><?php echo $row['sek_nama']; ?></td>
                     <td><?php echo $row['inter_bulan']; ?></td>
-                    <td><?php echo $row['inter_file']; ?></td>
+                    <td><a href="files/<?php echo $row['inter_file']; ?>" target="_blank"><?php echo $row['inter_file']; ?></a></td>
                     <td>
                       <a href="#" id="<?php echo $row['interim_id']; ?>" class="btn btn-xs btn-info edit_data" title="Kemaskini">
                           <i class="fas fa-edit"></i>
@@ -156,12 +156,16 @@ $interim = $list->sql;
               <div class="col-sm-12">
                 <div class="form-group">
                   <label for="exampleInputFile">Fail</label>
-                  <div class="input-group">
+                  <div class="input-group">                    
                     <div class="custom-file">
                       <input type="file" name="inter_file" class="custom-file-input" id="inter_file">
-                      <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                      <label class="custom-file-label" for="exampleInputFile">Pilih fail</label><br>
+                      <!-- <div id="linkfile"></div><br> -->
                     </div>
                   </div>
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputFile" id="linkfile"></label>
                 </div>
               </div>
             </div> 
@@ -237,7 +241,7 @@ $(document).ready(function(){
   
   // DELETE RECORD
   $(document).on('click', '.del_data', function(){ 
-    var sekolah_id = $(this).attr("id");
+    var interim_id = $(this).attr("id");
     $('#delete_form')[0].reset();    
     $('#del_interim_id').val(interim_id);
     $('#padam_interim').modal('show');  
@@ -254,7 +258,7 @@ $(document).ready(function(){
       success:function(data){ 
         $('#interim_id').val(data.interim_id); 
         $('#inter_bulan').val(data.inter_bulan);  
-        $('#inter_file').val(data.inter_file);  
+        $('#linkfile').html(data.inter_file);  
         $('#inter_jenis').val(data.inter_jenis);  
         $('#insert').html("Kemaskini");  
         $('#add_interim').modal('show');  
@@ -267,23 +271,27 @@ $(document).ready(function(){
     {  
       alert("Sila pilih bulan");  
     }  
-    else if($('#inter_file').val() == '')  
-    {  
-      alert("Sila pilih fail");  
-    }  
     else if($('#inter_jenis').val() == '')  
     {  
       alert("Sila pilih Jenis");  
     } 
+    if($('#inter_file').val() == "")  
+    {  
+      alert("Sila masukkan fail");  
+    }  
     else  
     {  
       $.ajax({  
-        url:"utiliti/interim_controller.php",  
-        method:"POST",  
-        data:$('#insert_form').serialize(),
+        url:"utiliti/interim_controller.php",
+        // contentType: 'multipart/form-data',
+        method:"POST",
+        // data:$('#insert_form').serialize(),
+        data: new FormData( this ),
+        processData: false,
+        contentType: false,
         beforeSend:function(data){  
           $('#insert').html("Muat naik");
-          if(data.sekolah_id==''){
+          if(data.interim_id==''){
             mesej = 'Rekod berjaya dimuat naik';
           }
           else{

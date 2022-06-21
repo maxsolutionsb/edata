@@ -44,7 +44,8 @@ $sekolah = $lssekolah->sql;
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-      <div class="table-responsive">  
+      <div class="row">
+        <div class="col-sm-12">  
         <div class="text-right">  
             <button type="button" name="add" id="add" class="btn btn-success">Tambah</button>  
         </div>  
@@ -88,6 +89,7 @@ $sekolah = $lssekolah->sql;
         </tbody>
         </table>
         </div>
+      </div>
       </div>
         <!-- /.row -->
       </div><!-- /.container-fluid -->

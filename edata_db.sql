@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50733
 File Encoding         : 65001
 
-Date: 2022-06-20 23:17:57
+Date: 2022-06-22 01:10:56
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -38,19 +38,19 @@ INSERT INTO `tbl_daerah` VALUES ('100000', '1401', 'Kuala Lumpur', 'Aktif');
 DROP TABLE IF EXISTS `tbl_internet_interim`;
 CREATE TABLE `tbl_internet_interim` (
   `interim_id` int(6) NOT NULL AUTO_INCREMENT,
-  `inter_sek_id` int(8) NOT NULL,
-  `inter_bulan` varchar(20) NOT NULL COMMENT 'Jan - Dis',
-  `inter_jenis` varchar(50) NOT NULL,
-  `inter_kuantiti` int(2) NOT NULL,
+  `inter_sek_id` int(8) DEFAULT NULL,
+  `inter_bulan` varchar(50) NOT NULL COMMENT 'Jan - Dis',
+  `inter_jenis` varchar(255) NOT NULL,
+  `inter_kuantiti` int(2) DEFAULT '0',
   `inter_file` varchar(255) DEFAULT NULL,
   `inter_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1-Aktif; 2-Tidak Aktif',
   PRIMARY KEY (`interim_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of tbl_internet_interim
 -- ----------------------------
-INSERT INTO `tbl_internet_interim` VALUES ('1', '10000600', 'Januari', 'TM', '3', 'ja2022.pdf', '1');
+INSERT INTO `tbl_internet_interim` VALUES ('20', '10000600', 'Januari', 'Celcom', '0', '10000600-Januari.pdf', '1');
 
 -- ----------------------------
 -- Table structure for `tbl_jenis_sekolah`
@@ -118,6 +118,7 @@ CREATE TABLE `tbl_pengguna` (
   `user_nama` varchar(255) NOT NULL,
   `user_nokp` varchar(12) NOT NULL,
   `user_email` varchar(150) NOT NULL,
+  `user_pass` varchar(50) NOT NULL,
   `user_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1-Aktif; 2-Tidak Aktif',
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
@@ -125,8 +126,8 @@ CREATE TABLE `tbl_pengguna` (
 -- ----------------------------
 -- Records of tbl_pengguna
 -- ----------------------------
-INSERT INTO `tbl_pengguna` VALUES ('1', 'Pentadbir', '8888', 'emel@emel.com1', '1');
-INSERT INTO `tbl_pengguna` VALUES ('2', 'Nama JK', '9999', 'emel1@emel.com', '1');
+INSERT INTO `tbl_pengguna` VALUES ('1', 'Pentadbir', '8888', 'emel@emel.com1', '*23AE809DDACAF96AF0FD78ED04B6A265E05AA257', '1');
+INSERT INTO `tbl_pengguna` VALUES ('2', 'Nama JK', '9999', 'emel1@emel.com', '*23AE809DDACAF96AF0FD78ED04B6A265E05AA257', '1');
 
 -- ----------------------------
 -- Table structure for `tbl_pengguna_role`
@@ -524,7 +525,7 @@ CREATE TABLE `tbl_sekolah_fasiliti` (
   `fas_kuantiti` int(2) NOT NULL,
   `fas_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1-Aktif; 2-Tidak Aktif',
   PRIMARY KEY (`fasiliti_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of tbl_sekolah_fasiliti
@@ -536,3 +537,4 @@ INSERT INTO `tbl_sekolah_fasiliti` VALUES ('4', '10000745', 'Bilik Utama', 'Pusa
 INSERT INTO `tbl_sekolah_fasiliti` VALUES ('6', '10000806', 'Bilik PC', 'Bilik Komputer', '15', '1');
 INSERT INTO `tbl_sekolah_fasiliti` VALUES ('24', '10000595', 'Bilik Angkasa', 'Makmal Komputer', '50', '1');
 INSERT INTO `tbl_sekolah_fasiliti` VALUES ('25', '10000741', 'Bilik Angkasa', 'Bilik Komputer', '20', '1');
+INSERT INTO `tbl_sekolah_fasiliti` VALUES ('26', '10000595', 'Bilik Angkasa 2', 'Makmal Komputer', '50', '1');

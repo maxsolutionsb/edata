@@ -17,38 +17,36 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="index2.html"><b>e</b>-DATA</a>    
+    <a href="index.php"><b>e</b>-DATA</a>    
   </div>
   <p class="text-center">Sistem Maklumat Peralatan ICT Sekolah Peringkat Jabatan dan Daerah Wilayah Persekutuan Kuala Lumpur (WPKL)</p>
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
       <p class="login-box-msg">Sila log-masuk</p>
-      <form action="main.php" method="post">
-        <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Login ID">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-user"></span>
+      <form action="utiliti/login_controller.php" method="post" id="quickForm">
+        <div class="form-group">
+          <div class="input-group mb-3">
+            <input type="text" name="loginid" id="loginid" class="form-control" placeholder="Login ID">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-user"></span>
+              </div>
             </div>
           </div>
         </div>
-        <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Katalaluan">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
+        <div class="form-group">
+          <div class="input-group mb-3">
+            <input type="password" name="katalaluan" id="katalaluan" class="form-control" placeholder="Katalaluan">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+              </div>
             </div>
           </div>
         </div>
         <div class="row">
-          <div class="col-8">
-            <div class="icheck-primary">
-              <input type="checkbox" id="remember">
-              <label for="remember">
-                Ingat saya
-              </label>
-            </div>
+          <div class="col-8"> 
           </div>
           <!-- /.col -->
           <div class="col-4">
@@ -72,7 +70,49 @@
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- jquery-validation -->
+<script src="plugins/jquery-validation/jquery.validate.min.js"></script>
+<script src="plugins/jquery-validation/additional-methods.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
 </body>
+<script>
+  $(function () {
+    // $.validator.setDefaults({
+    //   submitHandler: function () {
+    //     alert( "Form successful submitted!" );
+    //   }
+    // });
+    $('#quickForm').validate({
+      rules: {
+        loginid: {
+          required: true
+        },
+        katalaluan: {
+          required: true
+        },
+      },
+      messages: {
+        loginid: {
+          required: "Sila masukkan Login ID"
+        },
+        katalaluan: {
+          required: "Sila masukkan katalaluan"
+        },
+      },
+      errorElement: 'span',
+      errorPlacement: function (error, element) {
+        error.addClass('invalid-feedback');
+        element.closest('.form-group').append(error);
+      },
+      highlight: function (element, errorClass, validClass) {
+        $(element).addClass('is-invalid');
+      },
+      unhighlight: function (element, errorClass, validClass) {
+        $(element).removeClass('is-invalid');
+      }
+    });
+  });
+</script>
 </html>

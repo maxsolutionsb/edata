@@ -42,55 +42,57 @@ $user = $list->sql;
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-      <div class="table-responsive">  
-        <div align="right">  
+      <div class="row">
+        <div class="col-sm-12"> 
+        <div class="text-right">  
             <button type="button" name="add" id="add" class="btn btn-success">Tambah</button>  
         </div>  
         <br />
         <div id="sekolah_table">
-        <table id="example1" class="table table-bordered table-striped">
-          <thead>
-          <tr>
-              <th>No.</th>
-              <th>Nama</th>
-              <th>Peranan</th>
-              <th>PPD</th>
-              <th>Status</th>
-              <th>#</th>
-          </tr>
-          </thead>
-          <tbody>
-      <?php
-        $num = 1;
-        while($row = mysqli_fetch_assoc($user)){
-      ?>
-        <tr>
-            <td><?php echo $num++; ?></td>
-            <td><?php echo $row['user_nama']; ?></td>
-            <td><?php echo $row['role_nama']; ?></td>
-            <td><?php echo $row['ppd_nama']; ?></td>
-            <td><?php
-            if($row['pr_status']==1)
-                echo 'Aktif';
-            else
-                echo 'Tidak Aktif';
-            ?></td>
-            <td>
-              <a href="#" id="<?php echo $row['user_id']; ?>" class="btn btn-xs btn-info edit_data" title="Kemaskini">
-                  <i class="fas fa-edit"></i>
-              </a>
-              <a href="#" id="<?php echo $row['user_id']; ?>" class="btn btn-xs btn-danger del_data" title="Padam">
-                  <i class="fas fa-trash"></i>
-              </a>
-            </td>
-        </tr>
+          <table id="example1" class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                  <th>No.</th>
+                  <th>Nama</th>
+                  <th>Peranan</th>
+                  <th>PPD</th>
+                  <th>Status</th>
+                  <th>#</th>
+              </tr>
+            </thead>
+            <tbody>
+            <?php
+              $num = 1;
+              while($row = mysqli_fetch_assoc($user)){
+            ?>
+              <tr>
+                  <td><?php echo $num++; ?></td>
+                  <td><?php echo $row['user_nama']; ?></td>
+                  <td><?php echo $row['role_nama']; ?></td>
+                  <td><?php echo $row['ppd_nama']; ?></td>
+                  <td><?php
+                  if($row['pr_status']==1)
+                      echo 'Aktif';
+                  else
+                      echo 'Tidak Aktif';
+                  ?></td>
+                  <td>
+                    <a href="#" id="<?php echo $row['user_id']; ?>" class="btn btn-xs btn-info edit_data" title="Kemaskini">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <a href="#" id="<?php echo $row['user_id']; ?>" class="btn btn-xs btn-danger del_data" title="Padam">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                  </td>
+              </tr>
 
-      <?php
-        }
+            <?php
+              }
 
-      ?>
-        </tbody>
-        </table>
+            ?>
+            </tbody>
+          </table>
+        </div>
         </div>
       </div>
         <!-- /.row -->
