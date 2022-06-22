@@ -1,5 +1,59 @@
 
-<?php include('header.php'); ?>
+<?php 
+session_start();
+include('utiliti/data.php');
+include('utiliti/include.php');
+include('header.php');
+
+$SUser = new data();    
+$SUser->select("tbl_pengguna
+INNER JOIN tbl_pengguna_role ON tbl_pengguna.user_id = tbl_pengguna_role.pr_user_id
+INNER JOIN tbl_sekolah ON tbl_pengguna_role.pr_sekolah_id = tbl_sekolah.sekolah_id",
+"tbl_pengguna.user_id,
+tbl_pengguna.user_nama,
+tbl_pengguna.user_nokp,
+tbl_pengguna.user_phone,
+tbl_pengguna.user_email,
+tbl_pengguna_role.pr_role,
+tbl_sekolah.sek_nama",
+" user_id = '".$_SESSION['UKIDLogin']."' ");
+$user = $SUser->sql;
+$rowuser = mysqli_fetch_assoc($user);
+
+
+//COUNT NUMBER OF SCHOOL
+$where="";
+if($_SESSION['UKIDRole']==2){
+  $where = " tbl_sekolah.sek_ppd_id = ".$_SESSION['UKIPPD'];
+}
+
+$cschl = new data();
+$cschl->select("tbl_sekolah"," COUNT(tbl_sekolah.sekolah_id) AS bilangan ", $where );
+$rowcshl = mysqli_fetch_assoc($cschl->sql);
+$bilsekolah = $rowcshl['bilangan'];
+
+//COUT FASILITY
+$where="";
+if($_SESSION['UKIDRole']==1){
+  $where = "";
+}
+else if($_SESSION['UKIDRole']==2){
+  $where = " tbl_sekolah.sek_ppd_id = ".$_SESSION['UKIPPD'];
+}
+else{
+  $where = " tbl_sekolah_fasiliti.fas_sek_id = ".$_SESSION['pr_sekolah_id'];
+}
+
+$stat = new data();
+$stat->select("
+tbl_sekolah_fasiliti
+INNER JOIN tbl_sekolah ON tbl_sekolah_fasiliti.fas_sek_id = tbl_sekolah.sekolah_id",
+"SUM(if(tbl_sekolah_fasiliti.fas_jenis='Bilik Komputer',1,0)) AS bilKomp,
+SUM(if(tbl_sekolah_fasiliti.fas_jenis='Makmal Komputer',1,0)) AS makKomp,
+SUM(if(tbl_sekolah_fasiliti.fas_jenis='Pusat Akses',1,0)) AS pusAkses", $where);
+$statistik = $stat->sql;
+$curstat = mysqli_fetch_assoc($statistik);
+?>
 
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -24,14 +78,13 @@
           <!-- small box -->
           <div class="small-box bg-info">
             <div class="inner">
-              <h3>150</h3>
+              <h3><?php echo $bilsekolah; ?></h3>
 
               <p>Jumlah Sekolah</p>
             </div>
             <div class="icon">
               <i class="ion ion-bag"></i>
             </div>
-            <a href="#" class="small-box-footer">Selanjutnya <i class="fas fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -39,14 +92,12 @@
           <!-- small box -->
           <div class="small-box bg-success">
             <div class="inner">
-              <h3>53</h3>
-
+              <h3><?php echo $curstat['bilKomp']; ?></h3>
               <p>Bilik Komputer</p>
             </div>
             <div class="icon">
               <i class="ion ion-stats-bars"></i>
             </div>
-            <a href="#" class="small-box-footer">Selanjutnya <i class="fas fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -54,13 +105,12 @@
           <!-- small box -->
           <div class="small-box bg-warning">
             <div class="inner">
-              <h3>44</h3>
+              <h3><?php echo $curstat['makKomp']; ?></h3>
               <p>Makmal Komputer</p>
             </div>
             <div class="icon">
               <i class="ion ion-person-add"></i>
             </div>
-            <a href="#" class="small-box-footer">Selanjutnya <i class="fas fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -68,13 +118,12 @@
           <!-- small box -->
           <div class="small-box bg-danger">
             <div class="inner">
-              <h3>65</h3>
+              <h3><?php echo $curstat['pusAkses']; ?></h3>
               <p>Pusat Akses</p>
             </div>
             <div class="icon">
               <i class="ion ion-pie-graph"></i>
             </div>
-            <a href="#" class="small-box-footer">Selanjutnya <i class="fas fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -93,13 +142,13 @@
                        alt="User profile picture">
                 </div>
 
-                <h3 class="profile-username text-center">MOHD FADZILLAH</h3>
+                <h3 class="profile-username text-center"><?php echo strtoupper($rowuser['user_nama']); ?></h3>
 
-                <p class="text-muted text-center">Juruteknik Komputer</p>
+                <p class="text-muted text-center"><?php echo userRole($rowuser['pr_role']); ?></p>
 
                 <ul class="list-group list-group-unbordered mb-3">
-                  <li class="list-group-item">
-                    SEKOLAH KEBANGSAAN AU KERAMAT 
+                  <li class="list-group-item text-center">
+                    <?php echo $rowuser['sek_nama']; ?>
                   </li>
                 </ul>
               </div>
@@ -120,135 +169,34 @@
                 <div class="tab-content">
                   <div class="active tab-pane" id="sekolah">
                     <!-- <div class="row">  -->
-                      <table id="example1" class="table table-bordered table-striped">
-                        <thead>
-                        <tr>
-                          <th>Kod</th>
-                          <th>Sekolah</th>
-                          <th>PPD</th>
-                          <th>#</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                          <td>WBA0053</td>
-                          <td>SEKOLAH KEBANGSAAN AU KERAMAT</td>
-                          <td>PPD KERAMAT</td>
-                          <td>
-                            <a href="#" class="btn" data-toggle="modal" data-target="#modal-default">
-                              <i class="nav-icon fas fa-edit"></i>
-                            </a>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>WBA00544</td>
-                          <td>SEKOLAH KEBANGSAAN WANGSA MELAWATI</td>
-                          <td>PPD KERAMAT</td>
-                          <td>
-                            <a href="#" class="btn" data-toggle="modal" data-target="#modal-default">
-                              <i class="nav-icon fas fa-edit"></i>
-                            </a>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>WBA0055</td>
-                          <td>SEKOLAH KEBANGSAAN WANGSA MAJU SEKSYEN 1</td>
-                          <td>PPD KERAMAT</td>
-                          <td>
-                            <a href="#" class="btn" data-toggle="modal" data-target="#modal-default">
-                              <i class="nav-icon fas fa-edit"></i>
-                            </a>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>WBA0056</td>
-                          <td>SEKOLAH KEBANGSAAN WANGSA MAJU SEKSYEN 2</td>
-                          <td>PPD KERAMAT</td>
-                          <td>
-                            <a href="#" class="btn" data-toggle="modal" data-target="#modal-default">
-                              <i class="nav-icon fas fa-edit"></i>
-                            </a>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>WBA0057</td>
-                          <td>SEKOLAH KEBANGSAAN WANGSA MAJU ZON R10</td>
-                          <td>PPD KERAMAT</td>
-                          <td>
-                            <a href="#" class="btn" data-toggle="modal" data-target="#modal-default">
-                              <i class="nav-icon fas fa-edit"></i>
-                            </a>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>WBA0058</td>
-                          <td>SEKOLAH JENIS KEBANGSAAN (CINA) MUN YEE</td>
-                          <td>PPD KERAMAT</td>
-                          <td>
-                            <a href="#" class="btn" data-toggle="modal" data-target="#modal-default">
-                              <i class="nav-icon fas fa-edit"></i>
-                            </a>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>WBA0059</td>
-                          <td>SEKOLAH JENIS KEBANGSAAN (CINA) NAN KAI</td>
-                          <td>PPD KERAMAT</td>
-                          <td>
-                            <a href="#" class="btn" data-toggle="modal" data-target="#modal-default">
-                              <i class="nav-icon fas fa-edit"></i>
-                            </a>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>WBA0060</td>
-                          <td>SEKOLAH JENIS KEBANGSAAN (CINA) WANGSA MAJU</td>
-                          <td>PPD KERAMAT</td>
-                          <td>
-                            <a href="#" class="btn" data-toggle="modal" data-target="#modal-default">
-                              <i class="nav-icon fas fa-edit"></i>
-                            </a>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>WBA0061</td>
-                          <td>SEKOLAH JENIS KEBANGSAAN (TAMIL) FLETCHER</td>
-                          <td>PPD KERAMAT</td>
-                          <td>
-                            <a href="#" class="btn" data-toggle="modal" data-target="#modal-default">
-                              <i class="nav-icon fas fa-edit"></i>
-                            </a>
-                          </td>
-                        </tr>
-                        </tbody>
-                      </table>
+                    <div class="card">
+                      <div class="card-body">
+                        <canvas id="pieChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                      </div>
+                      <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
                     <!-- </div> -->
                   </div>
                   <!-- /.tab-pane -->
                   <div class="tab-pane" id="settings">
-                    <form class="form-horizontal">
+                    <form class="form-horizontal" id="profil_form">
                       <div class="form-group row">
                         <label for="inputName" class="col-sm-3 col-form-label">Nama</label>
                         <div class="col-sm-9">
-                          <input type="email" class="form-control" id="inputName" placeholder="Nama">
+                          <input type="text" class="form-control" name="user_nama" id="user_nama" value="<?php echo $rowuser['user_nama']; ?>">
                         </div>
                       </div>
                       <div class="form-group row">
                         <label for="inputName" class="col-sm-3 col-form-label">No. Telefon</label>
                         <div class="col-sm-9">
-                          <input type="email" class="form-control" id="inputName" placeholder="No. Telefon">
+                          <input type="email" class="form-control" name="user_phone" id="user_phone" value="<?php echo $rowuser['user_phone']; ?>">
                         </div>
                       </div>
                       <div class="form-group row">
                         <label for="inputEmail" class="col-sm-3 col-form-label">E-Mel</label>
                         <div class="col-sm-9">
-                          <input type="email" class="form-control" id="inputEmail" placeholder="E-Mel">
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="inputName2" class="col-sm-3 col-form-label">Sekolah</label>
-                        <div class="col-sm-9">
-                          <input type="text" class="form-control" id="inputName2" placeholder="Sekolah">
+                          <input type="email" class="form-control" name="user_email" id="user_email" value="<?php echo $rowuser['user_email']; ?>">
                         </div>
                       </div>                      
                       <div class="form-group row">
@@ -357,5 +305,50 @@
 
   <?php 
   include('upper_footer.php');
+  ?>
+  <!-- ChartJS -->
+  <script src="plugins/chart.js/Chart.min.js"></script>
+  <script>
+     $(function () {
+
+      var donutData        = {
+        labels: [
+            'Bilik Komputer',
+            'Makmal Komputer',
+            'Pusat Akses',
+        ],
+        datasets: [
+          {
+            data: [<?php echo $curstat['bilKomp'].','.$curstat['makKomp'].','.$curstat['pusAkses'];?>],
+            backgroundColor : ['#f56954', '#00a65a', '#f39c12'],
+          }
+        ]
+      }
+
+      //-------------
+      //- PIE CHART -
+      //-------------
+      // Get context with jQuery - using jQuery's .get() method.
+      var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
+      var pieData        = donutData;
+      var pieOptions     = {
+        maintainAspectRatio : false,
+        responsive : true,
+      }
+
+      //Create pie or douhnut chart
+      // You can switch between pie and douhnut using the method below.
+      new Chart(pieChartCanvas, {
+        type: 'pie',
+        data: pieData,
+        options: pieOptions
+      })
+
+
+
+
+     });
+  </script>
+  <?php
   include('bottom_footer.php');
   ?>

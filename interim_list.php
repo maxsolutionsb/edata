@@ -8,6 +8,8 @@ tbl_internet_interim
 INNER JOIN tbl_sekolah ON tbl_internet_interim.inter_sek_id = tbl_sekolah.sekolah_id",
 "tbl_internet_interim.interim_id,
 tbl_sekolah.sek_nama,
+tbl_internet_interim.inter_jenis,
+tbl_internet_interim.inter_kuantiti,
 tbl_internet_interim.inter_bulan,
 tbl_internet_interim.inter_file");
 $interim = $list->sql;
@@ -52,7 +54,9 @@ $interim = $list->sql;
               <thead>
                 <tr>
                   <th width="5%" class="text-center">Bil.</th>
-                  <th width="55%">Sekolah</th>
+                  <th width="35%">Sekolah</th>
+                  <th width="10%" class="text-center">Jenis</th>
+                  <th width="10%" class="text-center">Bil. Talian</th>
                   <th width="10%" class="text-center">Bulan</th>
                   <th width="20%">Fail</th>
                   <th width="10%">#</th>
@@ -66,6 +70,8 @@ $interim = $list->sql;
                 <tr>
                     <td class="text-center"><?php echo $bil++; ?></td>
                     <td><?php echo $row['sek_nama']; ?></td>
+                    <td><?php echo $row['inter_jenis']; ?></td>
+                    <td><?php echo $row['inter_kuantiti']; ?></td>
                     <td><?php echo $row['inter_bulan']; ?></td>
                     <td><a href="files/<?php echo $row['inter_file']; ?>" target="_blank"><?php echo $row['inter_file']; ?></a></td>
                     <td>
@@ -124,7 +130,7 @@ $interim = $list->sql;
             <div class="row">
               <div class="col-sm-6">
                 <div class="form-group">
-                  <label for="inter_bulan" class="col-sm-2 col-form-label">Bulan</label>            
+                  <label for="inter_bulan" class="form-label">Bulan</label>            
                   <select class="form-control select2" id="inter_bulan" name="inter_bulan" style="width: 100%;">
                     <option selected="selected" value="">--Sila  pilih--</option>
                     <option value="Januari">Januari</option>
@@ -141,16 +147,22 @@ $interim = $list->sql;
                     <option value="Disember">Disember</option>
                   </select>
                 </div>
-              </div>
+              </div>              
               <div class="col-sm-6">
                 <div class="form-group">
-                  <label for="inter_jenis" class="col-sm-2 col-form-label">Jenis</label>            
+                  <label for="inter_jenis" class="form-label">Jenis</label>            
                   <select class="form-control select2" id="inter_jenis" name="inter_jenis" style="width: 100%;">
                     <option selected="selected" value="">--Sila  pilih--</option>
                     <option value="Celcom">Celcom</option>
                     <option value="Maxis">Maxis</option>
                     <option value="TM">TM</option>
                   </select>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="inter_jenis" class="form-label">Bilangan Talian</label>
+                  <input type="text" class="form-control" name="inter_kuantiti" id="inter_kuantiti">
                 </div>
               </div>
               <div class="col-sm-12">
@@ -259,7 +271,8 @@ $(document).ready(function(){
         $('#interim_id').val(data.interim_id); 
         $('#inter_bulan').val(data.inter_bulan);  
         $('#linkfile').html(data.inter_file);  
-        $('#inter_jenis').val(data.inter_jenis);  
+        $('#inter_jenis').val(data.inter_jenis);
+        $('#inter_kuantiti').val(data.inter_kuantiti); 
         $('#insert').html("Kemaskini");  
         $('#add_interim').modal('show');  
       }  
@@ -278,7 +291,11 @@ $(document).ready(function(){
     if($('#inter_file').val() == "")  
     {  
       alert("Sila masukkan fail");  
-    }  
+    }
+    if($('#inter_kuantiti').val() == "")  
+    {  
+      alert("Sila masukkan kuantiti talian");  
+    }   
     else  
     {  
       $.ajax({  

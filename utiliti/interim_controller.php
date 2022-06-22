@@ -28,6 +28,7 @@ if(!empty($_POST)){
         $message = '';
         $inter_bulan = $_POST["inter_bulan"];  
         $inter_jenis = $_POST["inter_jenis"];
+        $inter_kuantiti = $_POST["inter_kuantiti"];
         //Manage upload file
         $allowedfileExtensions = array('pdf','xlsx', 'xls'); //Pdf dan Excell diterima
         $fileTmpPath = $_FILES['inter_file']['tmp_name'];  
@@ -46,6 +47,7 @@ if(!empty($_POST)){
                 'inter_sek_id'=>$inter_sek_id,
                 'inter_bulan'=>$inter_bulan,
                 'inter_jenis'=>$inter_jenis,
+                'inter_kuantiti'=>$inter_kuantiti,
                 'inter_file'=>$newFileName
             ],"interim_id ='".$_POST["interim_id"]."'");
             
@@ -68,6 +70,7 @@ if(!empty($_POST)){
                 'inter_sek_id'=>$inter_sek_id,
                 'inter_bulan'=>$inter_bulan,
                 'inter_jenis'=>$inter_jenis,
+                'inter_kuantiti'=>$inter_kuantiti,
                 'inter_file'=>$newFileName
             ]);
 
@@ -94,6 +97,8 @@ if(!empty($_POST)){
         INNER JOIN tbl_sekolah ON tbl_internet_interim.inter_sek_id = tbl_sekolah.sekolah_id",
         "tbl_internet_interim.interim_id,
         tbl_sekolah.sek_nama,
+        tbl_internet_interim.inter_jenis,
+        tbl_internet_interim.inter_kuantiti,
         tbl_internet_interim.inter_bulan,
         tbl_internet_interim.inter_file");
         $interim = $lsintrm->sql; 
@@ -101,9 +106,11 @@ if(!empty($_POST)){
             <table id="example1" class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th width="5%">Bil.</th>
-                        <th width="55%">Sekolah</th>
-                        <th width="10%">Bulan</th>
+                        <th width="5%" class="text-center">Bil.</th>
+                        <th width="35%">Sekolah</th>
+                        <th width="10%" class="text-center">Jenis</th>
+                        <th width="10%" class="text-center">Bil. Talian</th>
+                        <th width="10%" class="text-center">Bulan</th>
                         <th width="20%">Fail</th>
                         <th width="10%">#</th>
                     </tr>
@@ -117,6 +124,8 @@ if(!empty($_POST)){
             <tr>
                 <td>'.$bil++.'</td>
                 <td>'.$row['sek_nama'].'</td>
+                <td>'.$row['inter_jenis'].'</td>
+                <td>'.$row['inter_kuantiti'].'</td>
                 <td>'.$row['inter_bulan'].'</td>
                 <td><a href="files/'.$row['inter_file'].'" target="_blank">'.$row['inter_file'].'</a></td>
                 <td>

@@ -8,13 +8,13 @@ if(!empty($_POST)){
     
     $lsuser = new data();    
     $lsuser->select("tbl_pengguna
-    INNER JOIN tbl_pengguna_role ON tbl_pengguna.user_id = tbl_pengguna_role.pr_user_id
-    ", 
+    INNER JOIN tbl_pengguna_role ON tbl_pengguna.user_id = tbl_pengguna_role.pr_user_id ", 
     "tbl_pengguna.user_id,
     tbl_pengguna.user_nama,
     tbl_pengguna.user_nokp,
     tbl_pengguna_role.pr_sekolah_id,
-    tbl_pengguna_role.pr_role",
+    tbl_pengguna_role.pr_role,
+    tbl_pengguna_role.pr_ppd_id",
     " tbl_pengguna.user_nokp = '$loginid' AND tbl_pengguna.user_pass = password($katalaluan) ");
     $user = $lsuser->sql;
 
@@ -22,6 +22,8 @@ if(!empty($_POST)){
         $row = mysqli_fetch_assoc($user);
         $_SESSION['UKIDLogin'] = $row['user_id'];
         $_SESSION['UKIDSekolah'] = $row['pr_sekolah_id'];
+        $_SESSION['UKIDRole'] = $row['pr_role'];
+        $_SESSION['UKIDPPD'] = $row['pr_ppd_id'];
         header('location:../main.php');
     }
     else{

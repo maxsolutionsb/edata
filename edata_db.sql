@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50733
 File Encoding         : 65001
 
-Date: 2022-06-22 01:10:56
+Date: 2022-06-22 23:40:33
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -45,12 +45,13 @@ CREATE TABLE `tbl_internet_interim` (
   `inter_file` varchar(255) DEFAULT NULL,
   `inter_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1-Aktif; 2-Tidak Aktif',
   PRIMARY KEY (`interim_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of tbl_internet_interim
 -- ----------------------------
-INSERT INTO `tbl_internet_interim` VALUES ('20', '10000600', 'Januari', 'Celcom', '0', '10000600-Januari.pdf', '1');
+INSERT INTO `tbl_internet_interim` VALUES ('20', '10000600', 'Januari', 'Celcom', '3', '10000600-Januari.pdf', '1');
+INSERT INTO `tbl_internet_interim` VALUES ('21', '10000600', 'Februari', 'TM', '3', '10000600-Februari.pdf', '1');
 
 -- ----------------------------
 -- Table structure for `tbl_jenis_sekolah`
@@ -117,8 +118,9 @@ CREATE TABLE `tbl_pengguna` (
   `user_id` int(6) NOT NULL AUTO_INCREMENT,
   `user_nama` varchar(255) NOT NULL,
   `user_nokp` varchar(12) NOT NULL,
+  `user_phone` varchar(15) DEFAULT NULL,
   `user_email` varchar(150) NOT NULL,
-  `user_pass` varchar(50) NOT NULL,
+  `user_pass` varchar(100) NOT NULL,
   `user_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1-Aktif; 2-Tidak Aktif',
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
@@ -126,8 +128,8 @@ CREATE TABLE `tbl_pengguna` (
 -- ----------------------------
 -- Records of tbl_pengguna
 -- ----------------------------
-INSERT INTO `tbl_pengguna` VALUES ('1', 'Pentadbir', '8888', 'emel@emel.com1', '*23AE809DDACAF96AF0FD78ED04B6A265E05AA257', '1');
-INSERT INTO `tbl_pengguna` VALUES ('2', 'Nama JK', '9999', 'emel1@emel.com', '*23AE809DDACAF96AF0FD78ED04B6A265E05AA257', '1');
+INSERT INTO `tbl_pengguna` VALUES ('1', 'KASTERIYA BIN SHUIB', '8888', '03-58000036', 'emel@emel.com1', '*23AE809DDACAF96AF0FD78ED04B6A265E05AA257', '1');
+INSERT INTO `tbl_pengguna` VALUES ('2', 'YONG YUNG YI', '9999', '03-58000037', 'emel1@emel.com', '*23AE809DDACAF96AF0FD78ED04B6A265E05AA257', '1');
 
 -- ----------------------------
 -- Table structure for `tbl_pengguna_role`
