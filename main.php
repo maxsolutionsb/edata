@@ -164,7 +164,7 @@ $curstat = mysqli_fetch_assoc($statistik);
             <div class="card">
               <div class="card-header p-2">
                 <ul class="nav nav-pills">
-                  <li class="nav-item"><a class="nav-link active" href="#sekolah" data-toggle="tab">Senarai Sekolah</a></li>
+                  <li class="nav-item"><a class="nav-link active" href="#sekolah" data-toggle="tab">Carta Fasiliti</a></li>
                   <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Kemaskini Profil</a></li>
                 </ul>
               </div><!-- /.card-header -->

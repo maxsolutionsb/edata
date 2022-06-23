@@ -12,6 +12,7 @@ if(!empty($_POST)){
     "tbl_pengguna.user_id,
     tbl_pengguna.user_nama,
     tbl_pengguna.user_nokp,
+    tbl_pengguna.user_gambar,
     tbl_pengguna_role.pr_sekolah_id,
     tbl_pengguna_role.pr_role,
     tbl_pengguna_role.pr_ppd_id",
@@ -22,6 +23,7 @@ if(!empty($_POST)){
         $row = mysqli_fetch_assoc($user);
         $_SESSION['UKIDLogin'] = $row['user_id'];
         $_SESSION['UKLoginNama'] = $row['user_nama'];
+        $_SESSION['UKLoginGambar'] = $row['user_gambar'];
         $_SESSION['UKIDSekolah'] = $row['pr_sekolah_id'];
         $_SESSION['UKIDRole'] = $row['pr_role'];
         $_SESSION['UKIDPPD'] = $row['pr_ppd_id'];

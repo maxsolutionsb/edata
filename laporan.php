@@ -65,74 +65,62 @@ $jenis = $lsjenis->sql;
             <ul class="pagination pagination-month justify-content-center">
                   <li class="page-item">
                       <a class="page-link" href="#">
-                          <p class="page-month text-danger">Jan</p>
-                          <p class="page-year text-danger">2021</p>
+                          <p class="page-month">Jan</p>
                       </a>
                   </li>
                   <li class="page-item active">
                       <a class="page-link" href="#">
                           <p class="page-month">Feb</p>
-                          <p class="page-year">2021</p>
                       </a>
                   </li>
                   <li class="page-item">
                       <a class="page-link" href="#">
                           <p class="page-month">Mar</p>
-                          <p class="page-year">2021</p>
                       </a>
                   </li>
                   <li class="page-item">
                       <a class="page-link" href="#">
                           <p class="page-month">Apr</p>
-                          <p class="page-year">2021</p>
                       </a>
                   </li>
                   <li class="page-item">
                       <a class="page-link" href="#">
                           <p class="page-month">May</p>
-                          <p class="page-year">2021</p>
                       </a>
                   </li>
                   <li class="page-item">
                       <a class="page-link" href="#">
                           <p class="page-month">Jun</p>
-                          <p class="page-year">2021</p>
                       </a>
                   </li>
                   <li class="page-item">
                       <a class="page-link" href="#">
                           <p class="page-month">Jul</p>
-                          <p class="page-year">2021</p>
                       </a>
                   </li>
                   <li class="page-item">
                       <a class="page-link" href="#">
                           <p class="page-month">Aug</p>
-                          <p class="page-year">2021</p>
                       </a>
                   </li>
                   <li class="page-item">
                       <a class="page-link" href="#">
                           <p class="page-month">Sep</p>
-                          <p class="page-year">2021</p>
                       </a>
                   </li>
                   <li class="page-item">
                       <a class="page-link" href="#">
                           <p class="page-month">Oct</p>
-                          <p class="page-year">2021</p>
                       </a>
                   </li>
                   <li class="page-item">
                       <a class="page-link" href="#">
                           <p class="page-month">Nov</p>
-                          <p class="page-year">2021</p>
                       </a>
                   </li>
                   <li class="page-item">
                       <a class="page-link" href="#">
                           <p class="page-month">Dec</p>
-                          <p class="page-year">2021</p>
                       </a>
                   </li>
                 </ul>

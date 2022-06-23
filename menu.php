@@ -50,14 +50,14 @@
               </p>
             </a>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-user"></i>
               <p>
                 Akaun Pengguna
               </p>
             </a>
-          </li>
+          </li> -->
           <li class="nav-item">
             <a href="utiliti/logout.php" class="nav-link">
               <i class="nav-icon fas fa-times"></i>
