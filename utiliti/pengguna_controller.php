@@ -27,6 +27,7 @@ if(!empty($_POST)){
             $iuser->update('tbl_pengguna',[
                 'user_nama'=>$user_nama,
                 'user_nokp'=>$user_nokp,
+                'user_pass'=>'password(123)',
                 'user_email'=>$user_email
             ],"user_id ='".$_POST["user_id"]."'");
 
@@ -44,6 +45,7 @@ if(!empty($_POST)){
             $curr_id =  $iuser1->insert1('tbl_pengguna',[
                 'user_nama'=>$user_nama,
                 'user_nokp'=>$user_nokp,
+                'user_pass'=>'password(123)',
                 'user_email'=>$user_email
             ]);
             if(isset($curr_id)){

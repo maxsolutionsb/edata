@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50733
 File Encoding         : 65001
 
-Date: 2022-06-22 23:40:33
+Date: 2022-06-23 16:16:48
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -121,15 +121,17 @@ CREATE TABLE `tbl_pengguna` (
   `user_phone` varchar(15) DEFAULT NULL,
   `user_email` varchar(150) NOT NULL,
   `user_pass` varchar(100) NOT NULL,
+  `user_gambar` varchar(255) DEFAULT NULL,
   `user_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1-Aktif; 2-Tidak Aktif',
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of tbl_pengguna
 -- ----------------------------
-INSERT INTO `tbl_pengguna` VALUES ('1', 'KASTERIYA BIN SHUIB', '8888', '03-58000036', 'emel@emel.com1', '*23AE809DDACAF96AF0FD78ED04B6A265E05AA257', '1');
-INSERT INTO `tbl_pengguna` VALUES ('2', 'YONG YUNG YI', '9999', '03-58000037', 'emel1@emel.com', '*23AE809DDACAF96AF0FD78ED04B6A265E05AA257', '1');
+INSERT INTO `tbl_pengguna` VALUES ('1', 'Saya Usop', '8888', '03-58000036', 'emel@emel.com1', '*23AE809DDACAF96AF0FD78ED04B6A265E05AA257', 'usup.jpg', '1');
+INSERT INTO `tbl_pengguna` VALUES ('2', 'YONG YUNG YI', '9999', '03-58000037', 'emel1@emel.com', '*23AE809DDACAF96AF0FD78ED04B6A265E05AA257', null, '1');
+INSERT INTO `tbl_pengguna` VALUES ('3', 'Mohd Ali', '7777', null, 'ali@emel.com', '*23AE809DDACAF96AF0FD78ED04B6A265E05AA257', null, '1');
 
 -- ----------------------------
 -- Table structure for `tbl_pengguna_role`
@@ -145,13 +147,14 @@ CREATE TABLE `tbl_pengguna_role` (
   `pr_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1-Aktif; 2-Tidak Aktif',
   `pr_ubah` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`pengguna_role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of tbl_pengguna_role
 -- ----------------------------
 INSERT INTO `tbl_pengguna_role` VALUES ('1', '1', '1002', '10000601', '1', '2022-06-10 23:19:47', '1', '2022-06-20 12:35:51');
-INSERT INTO `tbl_pengguna_role` VALUES ('2', '2', '0', '10000595', '3', '2022-06-10 23:20:39', '1', '2022-06-20 11:46:42');
+INSERT INTO `tbl_pengguna_role` VALUES ('2', '2', '1002', '10000595', '3', '2022-06-10 23:20:39', '1', '2022-06-23 11:46:42');
+INSERT INTO `tbl_pengguna_role` VALUES ('6', '3', '1002', '10000596', '2', '2022-06-23 11:49:09', '1', '2022-06-23 11:49:09');
 
 -- ----------------------------
 -- Table structure for `tbl_ppd`
@@ -527,7 +530,7 @@ CREATE TABLE `tbl_sekolah_fasiliti` (
   `fas_kuantiti` int(2) NOT NULL,
   `fas_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1-Aktif; 2-Tidak Aktif',
   PRIMARY KEY (`fasiliti_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of tbl_sekolah_fasiliti
@@ -540,3 +543,11 @@ INSERT INTO `tbl_sekolah_fasiliti` VALUES ('6', '10000806', 'Bilik PC', 'Bilik K
 INSERT INTO `tbl_sekolah_fasiliti` VALUES ('24', '10000595', 'Bilik Angkasa', 'Makmal Komputer', '50', '1');
 INSERT INTO `tbl_sekolah_fasiliti` VALUES ('25', '10000741', 'Bilik Angkasa', 'Bilik Komputer', '20', '1');
 INSERT INTO `tbl_sekolah_fasiliti` VALUES ('26', '10000595', 'Bilik Angkasa 2', 'Makmal Komputer', '50', '1');
+INSERT INTO `tbl_sekolah_fasiliti` VALUES ('27', '10000601', 'Bilik Angkasa 2', 'Bilik Komputer', '25', '1');
+INSERT INTO `tbl_sekolah_fasiliti` VALUES ('28', '10000601', 'Pusat Data', 'Pusat Akses', '5', '1');
+
+-- ----------------------------
+-- View structure for `vwinterimreport`
+-- ----------------------------
+DROP VIEW IF EXISTS `vwinterimreport`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vwinterimreport` AS select `tbl_internet_interim`.`interim_id` AS `interim_id`,`tbl_internet_interim`.`inter_sek_id` AS `inter_sek_id`,if((`tbl_internet_interim`.`inter_bulan` = 'Januari'),1,0) AS `jan`,if((`tbl_internet_interim`.`inter_bulan` = 'Februari'),1,0) AS `feb`,if((`tbl_internet_interim`.`inter_bulan` = 'Mac'),1,0) AS `mac`,if((`tbl_internet_interim`.`inter_bulan` = 'April'),1,0) AS `apr`,if((`tbl_internet_interim`.`inter_bulan` = 'Mei'),1,0) AS `mei`,if((`tbl_internet_interim`.`inter_bulan` = 'Jun'),1,0) AS `jun`,if((`tbl_internet_interim`.`inter_bulan` = 'Julai'),1,0) AS `jul`,if((`tbl_internet_interim`.`inter_bulan` = 'Ogos'),1,0) AS `ogo`,if((`tbl_internet_interim`.`inter_bulan` = 'September'),1,0) AS `sep`,if((`tbl_internet_interim`.`inter_bulan` = 'Oktober'),1,0) AS `okt`,if((`tbl_internet_interim`.`inter_bulan` = 'November'),1,0) AS `nov`,if((`tbl_internet_interim`.`inter_bulan` = 'Disember'),1,0) AS `dis` from `tbl_internet_interim` where (`tbl_internet_interim`.`inter_sek_id` = 10000600);

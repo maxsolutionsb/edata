@@ -1,6 +1,19 @@
 <?php 
+session_start();
 include('header.php'); 
 include 'utiliti/data.php';
+
+
+$where="";
+if($_SESSION['UKIDRole']==1){
+  $where = "";
+}
+else if($_SESSION['UKIDRole']==2){
+  $where = "tbl_sekolah.sek_ppd_id = ".$_SESSION['UKIDPPD'];
+}
+else{
+  $where = "tbl_internet_interim.inter_sek_id = ".$_SESSION['UKIDSekolah'];
+}
 
 $list = new data();
 $list->select("
@@ -8,10 +21,11 @@ tbl_internet_interim
 INNER JOIN tbl_sekolah ON tbl_internet_interim.inter_sek_id = tbl_sekolah.sekolah_id",
 "tbl_internet_interim.interim_id,
 tbl_sekolah.sek_nama,
+tbl_sekolah.sek_ppd_id,
 tbl_internet_interim.inter_jenis,
 tbl_internet_interim.inter_kuantiti,
 tbl_internet_interim.inter_bulan,
-tbl_internet_interim.inter_file");
+tbl_internet_interim.inter_file", $where );
 $interim = $list->sql;
 
 // $lsjenis = new data();
@@ -65,6 +79,7 @@ $interim = $list->sql;
               <tbody>
               <?php
                 $bil=1;
+                if($interim->num_rows > 0 ){
                 while($row = mysqli_fetch_assoc($interim)){
               ?>
                 <tr>
@@ -84,7 +99,7 @@ $interim = $list->sql;
                     </td>
                 </tr>
               <?php
-                }
+                } }
               ?>
               </tbody>
             </table>

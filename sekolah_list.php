@@ -1,6 +1,18 @@
 <?php 
+session_start();
 include('header.php'); 
 include 'utiliti/data.php';
+
+$where="";
+if($_SESSION['UKIDRole']==1){
+  $where = "";
+}
+else if($_SESSION['UKIDRole']==2){
+  $where = "tbl_sekolah.sek_ppd_id = ".$_SESSION['UKIDPPD'];
+}
+else{
+  $where = "tbl_sekolah.sekolah_id = ".$_SESSION['UKIDSekolah'];
+}
 
 $list = new data();
 $list->select("
@@ -10,7 +22,7 @@ INNER JOIN tbl_ppd ON tbl_sekolah.sek_ppd_id = tbl_ppd.ppd_id",
 tbl_sekolah.sek_kod,
 tbl_sekolah.sek_nama,
 tbl_ppd.ppd_nama,
-tbl_sekolah.sek_jenis");
+tbl_sekolah.sek_jenis", $where);
 $sekolah = $list->sql;
 
 $lsjenis = new data();
@@ -42,7 +54,8 @@ $jenis = $lsjenis->sql;
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-      <div class="table-responsive">  
+      <div class="row">
+        <div class="col-sm-12">  
         <div class="text-right">  
             <button type="button" name="add" id="add" class="btn btn-success">Tambah</button>  
         </div>  
@@ -84,9 +97,10 @@ $jenis = $lsjenis->sql;
         }
 
       ?>
-        </tbody>
+          </tbody>
         </table>
         </div>
+      </div>
       </div>
         <!-- /.row -->
       </div><!-- /.container-fluid -->

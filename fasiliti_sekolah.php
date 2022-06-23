@@ -1,13 +1,12 @@
 
 <?php 
+session_start();
 include('header.php');
 include 'utiliti/data.php';
+$sekolah_id = $_SESSION['UKIDSekolah'];
 
 if(isset($_GET['uk'])){
     $sekolah_id = $_GET['uk'];
-}
-else{
-    $sekolah_id = '10000595';
 }
 
 
@@ -152,7 +151,7 @@ $rowsek = mysqli_fetch_assoc($sekolah);
                                             }
                                         }
                                         else{
-                                            echo '<td colspan="4" class="text-center"><i>Tiada Rekod</i></td>';
+                                            echo '<td colspan="5" class="text-center"><i>Tiada Rekod</i></td>';
                                         }
                                         ?>                              
                                         </tbody>

@@ -14,23 +14,12 @@ tbl_pengguna.user_nama,
 tbl_pengguna.user_nokp,
 tbl_pengguna.user_phone,
 tbl_pengguna.user_email,
+tbl_pengguna.user_gambar,
 tbl_pengguna_role.pr_role,
 tbl_sekolah.sek_nama",
 " user_id = '".$_SESSION['UKIDLogin']."' ");
 $user = $SUser->sql;
 $rowuser = mysqli_fetch_assoc($user);
-
-
-//COUNT NUMBER OF SCHOOL
-$where="";
-if($_SESSION['UKIDRole']==2){
-  $where = " tbl_sekolah.sek_ppd_id = ".$_SESSION['UKIPPD'];
-}
-
-$cschl = new data();
-$cschl->select("tbl_sekolah"," COUNT(tbl_sekolah.sekolah_id) AS bilangan ", $where );
-$rowcshl = mysqli_fetch_assoc($cschl->sql);
-$bilsekolah = $rowcshl['bilangan'];
 
 //COUT FASILITY
 $where="";
@@ -38,11 +27,17 @@ if($_SESSION['UKIDRole']==1){
   $where = "";
 }
 else if($_SESSION['UKIDRole']==2){
-  $where = " tbl_sekolah.sek_ppd_id = ".$_SESSION['UKIPPD'];
+  $where = " tbl_sekolah.sek_ppd_id = ".$_SESSION['UKIDPPD'];
 }
 else{
-  $where = " tbl_sekolah_fasiliti.fas_sek_id = ".$_SESSION['pr_sekolah_id'];
+  $where = " tbl_sekolah.sekolah_id = ".$_SESSION['UKIDSekolah'];
 }
+
+$cschl = new data();
+$cschl->select("tbl_sekolah"," COUNT(tbl_sekolah.sekolah_id) AS bilangan ", $where );
+$rowcshl = mysqli_fetch_assoc($cschl->sql);
+$bilsekolah = $rowcshl['bilangan'];
+
 
 $stat = new data();
 $stat->select("
@@ -83,7 +78,7 @@ $curstat = mysqli_fetch_assoc($statistik);
               <p>Jumlah Sekolah</p>
             </div>
             <div class="icon">
-              <i class="ion ion-bag"></i>
+              <i class="ion ion-home"></i>
             </div>
           </div>
         </div>
@@ -96,7 +91,7 @@ $curstat = mysqli_fetch_assoc($statistik);
               <p>Bilik Komputer</p>
             </div>
             <div class="icon">
-              <i class="ion ion-stats-bars"></i>
+              <i class="ion ion-laptop"></i>
             </div>
           </div>
         </div>
@@ -109,7 +104,7 @@ $curstat = mysqli_fetch_assoc($statistik);
               <p>Makmal Komputer</p>
             </div>
             <div class="icon">
-              <i class="ion ion-person-add"></i>
+              <i class="ion ion-laptop"></i>
             </div>
           </div>
         </div>
@@ -122,7 +117,7 @@ $curstat = mysqli_fetch_assoc($statistik);
               <p>Pusat Akses</p>
             </div>
             <div class="icon">
-              <i class="ion ion-pie-graph"></i>
+              <i class="ion ion-wifi"></i>
             </div>
           </div>
         </div>
@@ -137,8 +132,16 @@ $curstat = mysqli_fetch_assoc($statistik);
             <div class="card card-primary card-outline">
               <div class="card-body box-profile">
                 <div class="text-center">
+                  <?php
+                  if(($rowuser['user_gambar'])==null){
+                    $gambar = 'unknown_user.jpg';
+                  }
+                  else{
+                    $gambar = $rowuser['user_gambar'];
+                  }
+                  ?>
                   <img class="profile-user-img img-fluid img-circle"
-                       src="dist/img/unknown_user.jpg"
+                       src="files/profil/<?php echo $gambar; ?>"
                        alt="User profile picture">
                 </div>
 
@@ -180,7 +183,7 @@ $curstat = mysqli_fetch_assoc($statistik);
                   </div>
                   <!-- /.tab-pane -->
                   <div class="tab-pane" id="settings">
-                    <form class="form-horizontal" id="profil_form">
+                    <form class="form-horizontal" id="profil_form" action="utiliti/profil_controller.php" method="POST">
                       <div class="form-group row">
                         <label for="inputName" class="col-sm-3 col-form-label">Nama</label>
                         <div class="col-sm-9">
@@ -197,6 +200,18 @@ $curstat = mysqli_fetch_assoc($statistik);
                         <label for="inputEmail" class="col-sm-3 col-form-label">E-Mel</label>
                         <div class="col-sm-9">
                           <input type="email" class="form-control" name="user_email" id="user_email" value="<?php echo $rowuser['user_email']; ?>">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label for="exampleInputFile" class="col-sm-3 col-form-label">Gambar</label>
+                        <div class="col-sm-9">
+                          <div class="input-group">                    
+                            <div class="custom-file">
+                              <input type="file" name="user_gambar" class="custom-file-input" id="user_gambar">
+                              <label class="custom-file-label" for="exampleInputFile"><?php echo $rowuser['user_gambar'] ? $rowuser['user_gambar']: 'Pilih fail'  ?></label><br>
+                              <!-- <div id="linkfile"></div><br> -->
+                            </div>
+                          </div>
                         </div>
                       </div>                      
                       <div class="form-group row">
@@ -311,7 +326,7 @@ $curstat = mysqli_fetch_assoc($statistik);
   <script>
      $(function () {
 
-      var donutData        = {
+      var donutData = {
         labels: [
             'Bilik Komputer',
             'Makmal Komputer',

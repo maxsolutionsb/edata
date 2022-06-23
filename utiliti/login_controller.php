@@ -21,6 +21,7 @@ if(!empty($_POST)){
     if($user->num_rows > 0){
         $row = mysqli_fetch_assoc($user);
         $_SESSION['UKIDLogin'] = $row['user_id'];
+        $_SESSION['UKLoginNama'] = $row['user_nama'];
         $_SESSION['UKIDSekolah'] = $row['pr_sekolah_id'];
         $_SESSION['UKIDRole'] = $row['pr_role'];
         $_SESSION['UKIDPPD'] = $row['pr_ppd_id'];

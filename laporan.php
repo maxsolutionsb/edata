@@ -3,14 +3,9 @@ include('header.php');
 include 'utiliti/data.php';
 
 $list = new data();
-$list->select("
-tbl_sekolah
-INNER JOIN tbl_ppd ON tbl_sekolah.sek_ppd_id = tbl_ppd.ppd_id",
+$list->select("tbl_sekolah",
 "tbl_sekolah.sekolah_id,
-tbl_sekolah.sek_kod,
-tbl_sekolah.sek_nama,
-tbl_ppd.ppd_nama,
-tbl_sekolah.sek_jenis");
+tbl_sekolah.sek_nama");
 $sekolah = $list->sql;
 
 $lsjenis = new data();
@@ -42,7 +37,8 @@ $jenis = $lsjenis->sql;
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-      <div class="table-responsive">  
+      <div class="row">
+        <div class="col-sm-12">
         <div class="text-right">  
             <button type="button" name="add" id="add" class="btn btn-success">Tambah</button>  
         </div>  
@@ -51,31 +47,99 @@ $jenis = $lsjenis->sql;
         <table id="example1" class="table table-bordered table-striped">
           <thead>
           <tr>
-              <th>Kod</th>
-              <th>Sekolah</th>
-              <th>Jenis</th>
-              <th>PPD</th>
-              <th>#</th>
+              <th width="5%">Bil.</th>
+              <th width="30%">Sekolah</th>
+              <th width="60%">Jenis</th>
+              <th width="5%">#</th>
           </tr>
           </thead>
           <tbody>
       <?php
+      $bil=1;
         while($row = mysqli_fetch_assoc($sekolah)){
       ?>
         <tr>
-            <td><?php echo $row['sek_kod']; ?></td>
+            <td><?php echo $bil++; ?></td>
             <td><?php echo $row['sek_nama']; ?></td>
-            <td><?php echo $row['sek_jenis']; ?></td>
-            <td><?php echo $row['ppd_nama']; ?></td>
             <td>
-              <a href="fasiliti_sekolah.php?uk=<?php echo $row['sekolah_id']; ?>" class="btn btn-xs btn-success" title="Fasiliti">
-                  <i class="fas fa-cogs"></i>
-              </a>
+            <ul class="pagination pagination-month justify-content-center">
+                  <li class="page-item">
+                      <a class="page-link" href="#">
+                          <p class="page-month text-danger">Jan</p>
+                          <p class="page-year text-danger">2021</p>
+                      </a>
+                  </li>
+                  <li class="page-item active">
+                      <a class="page-link" href="#">
+                          <p class="page-month">Feb</p>
+                          <p class="page-year">2021</p>
+                      </a>
+                  </li>
+                  <li class="page-item">
+                      <a class="page-link" href="#">
+                          <p class="page-month">Mar</p>
+                          <p class="page-year">2021</p>
+                      </a>
+                  </li>
+                  <li class="page-item">
+                      <a class="page-link" href="#">
+                          <p class="page-month">Apr</p>
+                          <p class="page-year">2021</p>
+                      </a>
+                  </li>
+                  <li class="page-item">
+                      <a class="page-link" href="#">
+                          <p class="page-month">May</p>
+                          <p class="page-year">2021</p>
+                      </a>
+                  </li>
+                  <li class="page-item">
+                      <a class="page-link" href="#">
+                          <p class="page-month">Jun</p>
+                          <p class="page-year">2021</p>
+                      </a>
+                  </li>
+                  <li class="page-item">
+                      <a class="page-link" href="#">
+                          <p class="page-month">Jul</p>
+                          <p class="page-year">2021</p>
+                      </a>
+                  </li>
+                  <li class="page-item">
+                      <a class="page-link" href="#">
+                          <p class="page-month">Aug</p>
+                          <p class="page-year">2021</p>
+                      </a>
+                  </li>
+                  <li class="page-item">
+                      <a class="page-link" href="#">
+                          <p class="page-month">Sep</p>
+                          <p class="page-year">2021</p>
+                      </a>
+                  </li>
+                  <li class="page-item">
+                      <a class="page-link" href="#">
+                          <p class="page-month">Oct</p>
+                          <p class="page-year">2021</p>
+                      </a>
+                  </li>
+                  <li class="page-item">
+                      <a class="page-link" href="#">
+                          <p class="page-month">Nov</p>
+                          <p class="page-year">2021</p>
+                      </a>
+                  </li>
+                  <li class="page-item">
+                      <a class="page-link" href="#">
+                          <p class="page-month">Dec</p>
+                          <p class="page-year">2021</p>
+                      </a>
+                  </li>
+                </ul>
+            </td>
+            <td>
               <a href="#" id="<?php echo $row['sekolah_id']; ?>" class="btn btn-xs btn-info edit_data" title="Kemaskini">
                   <i class="fas fa-edit"></i>
-              </a>
-              <a href="#" id="<?php echo $row['sekolah_id']; ?>" class="btn btn-xs btn-danger del_data" title="Padam">
-                  <i class="fas fa-trash"></i>
               </a>
             </td>
         </tr>
@@ -88,177 +152,13 @@ $jenis = $lsjenis->sql;
         </table>
         </div>
       </div>
+      </div>
         <!-- /.row -->
       </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-
-  <!-- MODAL -->
-  <div id="dataModal" class="modal fade">  
-    <div class="modal-dialog">  
-      <div class="modal-content">  
-        <div class="modal-header">  
-          <button type="button" class="close" data-dismiss="modal">&times;</button>  
-          <h4 class="modal-title">Maklumat Sekolah</h4>  
-        </div>  
-        <div class="modal-body" id="school_details">  
-        </div>  
-        <div class="modal-footer">  
-          <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>  
-        </div>  
-      </div>  
-    </div>  
-  </div> 
-
-  <div class="modal fade" id="add_sekolah">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <form class="form-horizontal" action="" method="post" id="insert_form">
-          <input type="hidden" name="sekolah_id" id="sekolah_id">
-          <div class="modal-header">
-            <h4 class="modal-title">Tambah Maklumat Sekolah</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="form-group row">
-              <label for="kod_sekolah" class="col-sm-2 col-form-label">Kod</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control" id="kod_sekolah" name="kod_sekolah" placeholder="Kod Sekolah">
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="nama_sekolah" class="col-sm-2 col-form-label">Nama</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control" id="nama_sekolah" name="nama_sekolah" placeholder="Nama Sekolah">
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="no_telefon" class="col-sm-2 col-form-label">Jenis Sekolah</label>
-              <div class="col-sm-4">
-                <select class="form-control select2" id="jenis" name="jenis" style="width: 100%;">
-                  <option selected="selected" value="">--Sila  pilih--</option>
-                  <?php
-                  while($row = mysqli_fetch_assoc($jenis)){
-                    echo '<option value="'.$row['jenis'].'">'.$row['jenis'].'</option>';
-                  }
-                  ?>
-                </select>
-              </div>
-              <label for="alamat_baris1" class="col-sm-2 col-form-label">PTJ</label>
-              <div class="col-sm-4">
-                <select class="form-control select2" id="ptj" name="ptj" style="width: 100%;">
-                  <option selected="selected" value="">--Sila  pilih--</option>
-                  <option value="YA">Ya</option>
-                  <option value="TIDAK">Tidak</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="alamat_baris1" class="col-sm-2 col-form-label">Lokasi</label>
-              <div class="col-sm-10">
-                <select class="form-control select2" id="lokasi" name="lokasi" style="width: 100%;">
-                  <option selected="selected" value="">--Sila  pilih--</option>
-                  <option value="Bandar">Bandar</option>
-                  <option value="Luar Bandar">Luar Bandar</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="alamat_baris1" class="col-sm-2 col-form-label">Alamat</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control" id="alamat_baris1" name="alamat_baris1" placeholder="Baris 1">
-              </div>
-              <label for="alamat_baris2" class="col-sm-2 col-form-label"></label>
-              <div class="col-sm-10 mt-1">
-                <input type="text" class="form-control" id="alamat_baris2" name="alamat_baris2" placeholder="Baris 2">
-              </div>
-              <label for="alamat_baris3" class="col-sm-2 col-form-label"></label>
-              <div class="col-sm-10 mt-1">
-                <input type="text" class="form-control" id="alamat_baris3" name="alamat_baris3" placeholder="Baris 3">
-              </div>
-              <label for="poskod" class="col-sm-2 col-form-label"></label>
-              <div class="col-sm-5 mt-1">
-                <input type="text" class="form-control" id="poskod" name="poskod" placeholder="Poskod">
-              </div>                
-              <div class="col-sm-5 mt-1">
-                <select class="form-control select2" id="daerah" name="daerah" style="width: 100%;">
-                  <option selected="selected">--Sila  pilih Bandar--</option>
-                  <option value="100000">Kuala Lumpur</option>>
-                </select>
-              </div>
-              <label for="inputName2" class="col-sm-2 col-form-label"></label>
-              <div class="col-sm-5 mt-1">
-                <select class="form-control select2" id="negeri" name="negeri" style="width: 100%;">
-                  <option selected="selected">--Sila  pilih negeri--</option>
-                  <option value="14">W.P. Kuala Lumpur</option>
-                </select>
-              </div>                
-            </div>
-            <div class="form-group row">
-              <label for="no_telefon" class="col-sm-2 col-form-label">PPD</label>
-              <div class="col-sm-10">
-                <select class="form-control select2" id="ppd" name="ppd" style="width: 100%;">
-                  <option selected="selected" value="">--Sila  pilih PPD--</option>
-                  <option value="1000">PPD Bangsar Pudu</option>
-                  <option value="1001">PPD Keramat</option>
-                  <option value="1002">PPD Sentul</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="no_telefon" class="col-sm-2 col-form-label">No Telefon</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control" id="no_telefon" name="no_telefon" placeholder="No Telefon Sekolah">
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="emel" class="col-sm-2 col-form-label">E-Mel</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control" id="emel" name="emel" placeholder="E-Mel Sekolah">
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-            <button type="submit" class="btn btn-danger" id="insert">Simpan</button>
-          </div> 
-        </form>
-      </div>
-      <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-  </div>
-
-  <div class="modal fade" id="padam_sekolah">
-    <div class="modal-dialog modal-sm">
-      <div class="modal-content">
-        <form class="form-horizontal" action="" method="post" id="delete_form">
-          <div class="modal-header">
-            <h4 class="modal-title">Padam Rekod</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <p>Adakah anda pasti?</p>
-            <input type="hidden" name="del_sekolah_id" id="del_sekolah_id">
-            <input type="hidden" name="del_action" value="Padam">
-          </div>
-          <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Tidak</button>
-            <button type="submit" id="btn_del_sekolah" class="btn btn-danger">Ya</button>
-          </div>
-        </form>
-      </div>
-      <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-  </div>
-
 <?php include('upper_footer.php'); ?>
 <!-- DataTables  & Plugins -->
 <script src="plugins/datatables/jquery.dataTables.min.js"></script>
