@@ -1,8 +1,7 @@
 
 <?php 
-session_start();
-include('header.php');
 include 'utiliti/data.php';
+include('header.php');
 $sekolah_id = $_SESSION['UKIDSekolah'];
 
 if(isset($_GET['uk'])){

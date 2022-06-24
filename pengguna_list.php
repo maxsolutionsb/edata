@@ -1,6 +1,6 @@
 <?php 
-include('header.php'); 
 include 'utiliti/data.php';
+include('header.php'); 
 
 $list = new data();
 $list->select("

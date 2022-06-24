@@ -1,10 +1,8 @@
 
 <?php 
-session_start();
 include('utiliti/data.php');
 include('utiliti/include.php');
 include('header.php');
-
 $SUser = new data();    
 $SUser->select("tbl_pengguna
 INNER JOIN tbl_pengguna_role ON tbl_pengguna.user_id = tbl_pengguna_role.pr_user_id

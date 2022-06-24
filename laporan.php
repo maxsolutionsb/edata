@@ -2,6 +2,17 @@
 include('header.php'); 
 include 'utiliti/data.php';
 
+$where="";
+if($_SESSION['UKIDRole']==1){
+  $where = "";
+}
+else if($_SESSION['UKIDRole']==2){
+  $where = "tbl_sekolah.sek_ppd_id = ".$_SESSION['UKIDPPD'];
+}
+else{
+  $where = "tbl_sekolah.sekolah_id = ".$_SESSION['UKIDSekolah'];
+}
+
 $list = new data();
 $list->select("tbl_sekolah",
 "tbl_sekolah.sekolah_id,

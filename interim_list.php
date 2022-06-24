@@ -1,8 +1,6 @@
 <?php 
-session_start();
-include('header.php'); 
 include 'utiliti/data.php';
-
+include('header.php'); 
 
 $where="";
 if($_SESSION['UKIDRole']==1){

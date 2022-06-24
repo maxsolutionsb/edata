@@ -18,6 +18,7 @@
               </p>
             </a>
           </li>
+          
           <li class="nav-item">
             <a href="fasiliti_sekolah.php" class="nav-link">
               <i class="nav-icon fas fa-tools"></i>
@@ -34,6 +35,8 @@
               </p>
             </a>
           </li>
+          
+          <?php if($_SESSION['UKIDRole']==1){ ?>
           <li class="nav-item">
             <a href="staff_list.php" class="nav-link">
               <i class="nav-icon fas fa-users"></i>
@@ -42,6 +45,7 @@
               </p>
             </a>
           </li>
+          <?php } ?>
           <li class="nav-item">
             <a href="laporan.php" class="nav-link">
               <i class="nav-icon fas fa-chart-pie"></i>
