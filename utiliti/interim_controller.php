@@ -5,6 +5,18 @@ $inter_sek_id=$_SESSION['UKIDSekolah'];
 // directory where file will be moved
 $uploadFileDir = 'C:\laragon\www\edata\files\/';
 
+$where="";
+if($_SESSION['UKIDRole']==1){
+  $where = "";
+}
+else if($_SESSION['UKIDRole']==2){
+  $where = "tbl_sekolah.sek_ppd_id = ".$_SESSION['UKIDPPD'];
+}
+else{
+  $where = "tbl_internet_interim.inter_sek_id = ".$_SESSION['UKIDSekolah'];
+}
+
+
 if(!empty($_POST)){
     if(isset($_POST['del_action'])){
 
@@ -101,7 +113,7 @@ if(!empty($_POST)){
         tbl_internet_interim.inter_jenis,
         tbl_internet_interim.inter_kuantiti,
         tbl_internet_interim.inter_bulan,
-        tbl_internet_interim.inter_file");
+        tbl_internet_interim.inter_file",  $where );
         $interim = $lsintrm->sql; 
         $output .= '  
             <table id="example1" class="table table-bordered table-striped">

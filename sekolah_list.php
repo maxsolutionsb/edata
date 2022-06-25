@@ -54,10 +54,14 @@ $jenis = $lsjenis->sql;
     <section class="content">
       <div class="container-fluid">
       <div class="row">
-        <div class="col-sm-12">  
+        <div class="col-sm-12">
+      <?php
+      if($_SESSION['UKIDRole']!=3){ ?>
+    
         <div class="text-right">  
             <button type="button" name="add" id="add" class="btn btn-success">Tambah</button>  
-        </div>  
+        </div>
+      <?php } ?>  
         <br />
         <div id="sekolah_table">
         <table id="example1" class="table table-bordered table-striped">

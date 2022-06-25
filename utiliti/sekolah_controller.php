@@ -1,7 +1,7 @@
 <?php  
 session_start();
 include('data.php');
-include 'utiliti/include.php';
+include ('include.php');
 
 if(!empty($_POST)){
     if(isset($_POST['del_action'])){
@@ -70,6 +70,16 @@ if(!empty($_POST)){
 
     //generate update list
     if($isek == true){  
+        $where="";
+    if($_SESSION['UKIDRole']==1){
+        $where = "";
+    }
+    else if($_SESSION['UKIDRole']==2){
+        $where = "tbl_sekolah.sek_ppd_id = ".$_SESSION['UKIDPPD'];
+    }
+    else{
+        $where = "tbl_sekolah.sekolah_id = ".$_SESSION['UKIDSekolah'];
+    }
         $output='';
         $lssekolah = new data();
         $lssekolah->select("tbl_sekolah
@@ -78,7 +88,7 @@ if(!empty($_POST)){
         tbl_sekolah.sek_kod,
         tbl_sekolah.sek_nama,
         tbl_ppd.ppd_nama,
-        tbl_sekolah.sek_jenis");
+        tbl_sekolah.sek_jenis", $where);
         $sekolah = $lssekolah->sql; 
         $output .= '  
             <table id="example1" class="table table-bordered table-striped">
