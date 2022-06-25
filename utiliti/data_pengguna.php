@@ -1,4 +1,5 @@
 <?php
+session_start();
 include('data.php');
 
 if(isset($_POST["user_id"])) { 

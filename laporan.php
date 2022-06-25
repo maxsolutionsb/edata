@@ -1,6 +1,6 @@
 <?php 
-include('header.php'); 
 include 'utiliti/data.php';
+include('header.php'); 
 
 $where="";
 if($_SESSION['UKIDRole']==1){
@@ -19,9 +19,6 @@ $list->select("tbl_sekolah",
 tbl_sekolah.sek_nama");
 $sekolah = $list->sql;
 
-$lsjenis = new data();
-$lsjenis->select("tbl_jenis_sekolah");
-$jenis = $lsjenis->sql;
 ?>
   <!-- SweetAlert2 -->
   <link rel="stylesheet" href="plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
@@ -34,7 +31,7 @@ $jenis = $lsjenis->sql;
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Laporan Pengahantaran</h1>
+            <h1>Laporan Penghantaran</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -54,13 +51,25 @@ $jenis = $lsjenis->sql;
             <button type="button" name="add" id="add" class="btn btn-success">Tambah</button>  
         </div>  
         <br />
-        <div id="sekolah_table">
+        <div class="row">
+          <div class="col-sm-12">
         <table id="example1" class="table table-bordered table-striped">
           <thead>
           <tr>
               <th width="5%">Bil.</th>
               <th width="30%">Sekolah</th>
-              <th width="60%">Jenis</th>
+              <th width="5%">Jan</th>
+              <th width="5%">Feb</th>
+              <th width="5%">Mac</th>
+              <th width="5%">Apr</th>
+              <th width="5%">Mei</th>
+              <th width="5%">Jun</th>
+              <th width="5%">Jul</th>
+              <th width="5%">Ogo</th>
+              <th width="5%">Sep</th>
+              <th width="5%">Okt</th>
+              <th width="5%">Nov</th>
+              <th width="5%">Dis</th>
               <th width="5%">#</th>
           </tr>
           </thead>
@@ -68,74 +77,36 @@ $jenis = $lsjenis->sql;
       <?php
       $bil=1;
         while($row = mysqli_fetch_assoc($sekolah)){
+          $rep = new data();
+          $rep->select("vwinterimreport","*","inter_sek_id = '".$row['sekolah_id']."' ");
+          $lapor = $rep->sql;          
       ?>
+        
         <tr>
             <td><?php echo $bil++; ?></td>
             <td><?php echo $row['sek_nama']; ?></td>
-            <td>
-            <ul class="pagination pagination-month justify-content-center">
-                  <li class="page-item">
-                      <a class="page-link" href="#">
-                          <p class="page-month">Jan</p>
-                      </a>
-                  </li>
-                  <li class="page-item active">
-                      <a class="page-link" href="#">
-                          <p class="page-month">Feb</p>
-                      </a>
-                  </li>
-                  <li class="page-item">
-                      <a class="page-link" href="#">
-                          <p class="page-month">Mar</p>
-                      </a>
-                  </li>
-                  <li class="page-item">
-                      <a class="page-link" href="#">
-                          <p class="page-month">Apr</p>
-                      </a>
-                  </li>
-                  <li class="page-item">
-                      <a class="page-link" href="#">
-                          <p class="page-month">May</p>
-                      </a>
-                  </li>
-                  <li class="page-item">
-                      <a class="page-link" href="#">
-                          <p class="page-month">Jun</p>
-                      </a>
-                  </li>
-                  <li class="page-item">
-                      <a class="page-link" href="#">
-                          <p class="page-month">Jul</p>
-                      </a>
-                  </li>
-                  <li class="page-item">
-                      <a class="page-link" href="#">
-                          <p class="page-month">Aug</p>
-                      </a>
-                  </li>
-                  <li class="page-item">
-                      <a class="page-link" href="#">
-                          <p class="page-month">Sep</p>
-                      </a>
-                  </li>
-                  <li class="page-item">
-                      <a class="page-link" href="#">
-                          <p class="page-month">Oct</p>
-                      </a>
-                  </li>
-                  <li class="page-item">
-                      <a class="page-link" href="#">
-                          <p class="page-month">Nov</p>
-                      </a>
-                  </li>
-                  <li class="page-item">
-                      <a class="page-link" href="#">
-                          <p class="page-month">Dec</p>
-                      </a>
-                  </li>
-                </ul>
-            </td>
+          <?php 
+          if($lapor->num_rows > 0){
+            $rowlap = mysqli_fetch_assoc($lapor);
+          ?>
+            <td class="text-center"><?php if($rowlap['jan']==1) echo '/'; else echo 'X'; ?></td>
+            <td class="text-center"><?php if($rowlap['feb']==1) echo '/'; else echo 'X'; ?></td>
+            <td class="text-center"><?php if($rowlap['mac']==1) echo '/'; else echo 'X'; ?></td>
+            <td class="text-center"><?php if($rowlap['apr']==1) echo '/'; else echo 'X'; ?></td>
+            <td class="text-center"><?php if($rowlap['mei']==1) echo '/'; else echo 'X'; ?></td>
+            <td class="text-center"><?php if($rowlap['jun']==1) echo '/'; else echo 'X'; ?></td>
+            <td class="text-center"><?php if($rowlap['jul']==1) echo '/'; else echo 'X'; ?></td>
+            <td class="text-center"><?php if($rowlap['ogo']==1) echo '/'; else echo 'X'; ?></td>
+            <td class="text-center"><?php if($rowlap['sep']==1) echo '/'; else echo 'X'; ?></td>
+            <td class="text-center"><?php if($rowlap['okt']==1) echo '/'; else echo 'X'; ?></td>
+            <td class="text-center"><?php if($rowlap['nov']==1) echo '/'; else echo 'X'; ?></td>
+            <td class="text-center"><?php if($rowlap['dis']==1) echo '/'; else echo 'X'; ?></td>
+          <?php 
+          }
+          else {
+            echo '<td class="text-center" colspan="12">Tiada Rekod</td>';
+          }
+          ?>
             <td>
               <a href="#" id="<?php echo $row['sekolah_id']; ?>" class="btn btn-xs btn-info edit_data" title="Kemaskini">
                   <i class="fas fa-edit"></i>
@@ -149,6 +120,7 @@ $jenis = $lsjenis->sql;
       ?>
         </tbody>
         </table>
+        </div>
         </div>
       </div>
       </div>
@@ -179,149 +151,7 @@ $jenis = $lsjenis->sql;
 <script src="plugins/toastr/toastr.min.js"></script>
 <script>
 $(document).ready(function(){ 
-  $('#add').click(function(){  
-    $('#insert').html("Tambah");  
-    $('#insert_form')[0].reset(); 
-    $('#add_sekolah').modal('show');  
-  });
   
-  // DELETE RECORD
-  $(document).on('click', '.del_data', function(){ 
-    var sekolah_id = $(this).attr("id");
-    $('#delete_form')[0].reset();    
-    $('#del_sekolah_id').val(sekolah_id);
-    $('#padam_sekolah').modal('show');  
-  }); 
-  
-  $(document).on('click', '.edit_data', function(){  
-    var sekolah_id = $(this).attr("id");  
-    // alert(sekolah_id);
-    $.ajax({  
-      url:"utiliti/data_sekolah.php",  
-      method:"POST",  
-      data:{sekolah_id:sekolah_id},  
-      dataType: "json",  
-      success:function(data){ 
-        $('#sekolah_id').val(data.sekolah_id); 
-        $('#kod_sekolah').val(data.sek_kod);  
-        $('#nama_sekolah').val(data.sek_nama);  
-        $('#jenis').val(data.sek_jenis);  
-        $('#ptj').val(data.sek_ptj);  
-        $('#lokasi').val(data.sek_lokasi);  
-        $('#alamat_baris1').val(data.sek_alamat1); 
-        $('#alamat_baris2').val(data.sek_alamat2); 
-        $('#alamat_baris3').val(data.sek_alamat3);  
-        $('#poskod').val(data.sek_poskod); 
-        $('#daerah').val(data.sek_daerah_id); 
-        $('#negeri').val(data.sek_negeri_id); 
-        $('#ppd').val(data.sek_ppd_id); 
-        $('#no_telefon').val(data.sek_phone); 
-        $('#emel').val(data.sek_emel); 
-        $('#insert').html("Kemaskini");  
-        $('#add_sekolah').modal('show');  
-      }  
-    });  
-  });  
-  $('#insert_form').on("submit", function(event){  
-    event.preventDefault();  
-    if($('#kod_sekolah').val() == "")  
-    {  
-      alert("Sila masukkan Kod Sekolah");  
-    }  
-    else if($('#nama_sekolah').val() == '')  
-    {  
-      alert("Sila masukkan Nama Sekolah");  
-    }  
-    else if($('#jenis').val() == '')  
-    {  
-      alert("Sila pilih Jenis Sekolah");  
-    }  
-    else if($('#ptj').val() == '')  
-    {  
-      alert("Adakah Sekolah sebagai PTJ?");  
-    }
-    else if($('#lokasi').val() == '')  
-    {  
-      alert("Sila pilih Lokasi?");  
-    }
-    else if($('#alamat_baris1').val() == '')  
-    {  
-      alert("Sila masukkan sekurang-kurangnya alamat baris 1");  
-    } 
-    else if($('#daerah').val() == '')  
-    {  
-      alert("Sila pilih Daerah");  
-    }
-    else if($('#negeri').val() == '')  
-    {  
-      alert("Sila pilih Negeri");  
-    }
-    else if($('#ppd').val() == '')  
-    {  
-      alert("Sila pilih PPD");  
-    }   
-    else  
-    {  
-      $.ajax({  
-        url:"utiliti/sekolah_controller.php",  
-        method:"POST",  
-        data:$('#insert_form').serialize(),
-        beforeSend:function(data){  
-          $('#insert').html("Tambah");
-          if(data.sekolah_id==''){
-            mesej = 'Rekod berjaya ditambah';
-          }
-          else{
-            mesej = 'Rekod berjaya dikemaskini';
-          } 
-        },  
-        success:function(data){  
-          $('#insert_form')[0].reset();  
-          $('#add_sekolah').modal('hide');  
-          $('#sekolah_table').html(data); 
-          $("#example1").DataTable({
-            "responsive": true, "lengthChange": false, "autoWidth": false,
-            "buttons": ["excel", "pdf", "print"]
-          }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-          toastr.success(mesej);
-        }  
-      });  
-    }  
-  }); 
-  $('#delete_form').on("submit", function(event){  
-    event.preventDefault();   
-    $.ajax({  
-      url:"utiliti/sekolah_controller.php",  
-      method:"POST",  
-      data:$('#delete_form').serialize(),   
-      success:function(data){  
-        $('#delete_form')[0].reset();  
-        $('#padam_sekolah').modal('hide');  
-        $('#sekolah_table').html(data);
-        $("#example1").DataTable({
-          "responsive": true, "lengthChange": false, "autoWidth": false,
-          "buttons": ["excel", "pdf", "print"]
-        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)'); 
-        toastr.error('Rekod berjaya dipadam');
-
-      }  
-    });   
-  });
-  $(document).on('click', '.view_data', function(){  
-    var employee_id = $(this).attr("id");  
-    if(employee_id != '')  
-    {  
-      $.ajax({  
-        url:"select.php",  
-        method:"POST",  
-        data:{employee_id:employee_id},  
-        success:function(data){  
-          $('#employee_detail').html(data);  
-          $('#dataModal').modal('show');  
-        }  
-      });  
-    }            
-  }); 
    
 });  
 </script>

@@ -16,7 +16,7 @@ if(!empty($_POST)){
     tbl_pengguna_role.pr_sekolah_id,
     tbl_pengguna_role.pr_role,
     tbl_pengguna_role.pr_ppd_id",
-    " tbl_pengguna.user_nokp = '$loginid' AND tbl_pengguna.user_pass = password($katalaluan) ");
+    " tbl_pengguna.user_nokp = '$loginid' AND tbl_pengguna.user_pass = md5($katalaluan) ");
     $user = $lsuser->sql;
 
     if($user->num_rows > 0){
@@ -29,7 +29,7 @@ if(!empty($_POST)){
         $_SESSION['UKIDPPD'] = $row['pr_ppd_id'];
         header('location:../main.php');
     }
-    else{
+    else{       
         header('location:../index.php');
     }
 }  

@@ -1,6 +1,7 @@
-<?php  
+<?php
+session_start();  
 include('data.php');
-$inter_sek_id=10000600;
+$inter_sek_id=$_SESSION['UKIDSekolah'];
 // directory where file will be moved
 $uploadFileDir = 'C:\laragon\www\edata\files\/';
 

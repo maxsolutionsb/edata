@@ -1,27 +1,26 @@
-<?php  
+<?php 
+session_start();
+$user_id = $_SESSION['UKIDLogin'] ;
 include('data.php');
-
-if(!empty($_POST)){
-        $user_id = $_POST["user_id"];  
+$uploadFileDir = 'C:\laragon\www\edata\files\profil/';
+if(!empty($_POST["user_nama"])){
+        // $user_id = $_POST["user_id"];  
         $user_nama = $_POST["user_nama"];  
-        $user_nokp = $_POST["user_nokp"];  
-        $user_email = $_POST["user_email"];  
-        $pr_ppd_id = $_POST["pr_ppd_id"];
-        $pr_sekolah_id = $_POST["pr_sekolah_id"];
-        $pr_role = $_POST["pr_role"]; 
+        $user_phone = $_POST["user_phone"];  
+        $user_email = $_POST["user_email"];   
 
         //Move uploaded file to selected directory
-        if (file_exists($_FILES['inter_file']['tmp_name'])){
+        if (file_exists($_FILES['user_gambar']['tmp_name'])){
 
             //Manage upload file
-            $allowedfileExtensions = array('pdf','xlsx', 'xls'); //Pdf dan Excell diterima
-            $fileTmpPath = $_FILES['inter_file']['tmp_name'];  
-            $inter_file = $_FILES["inter_file"]['name'];
+            $allowedfileExtensions = array('jpg','png', 'jpeg'); //Pdf dan Excell diterima
+            $fileTmpPath = $_FILES['user_gambar']['tmp_name'];  
+            $user_gambar = $_FILES["user_gambar"]['name'];
 
-            $fileNameCmps = explode(".", $inter_file);
+            $fileNameCmps = explode(".", $user_gambar);
             $fileExtension = strtolower(end($fileNameCmps));
 
-            $newFileName = $inter_sek_id.'-'. $inter_bulan . '.' . $fileExtension;
+            $newFileName ='profile-'. $user_id . '.' . $fileExtension;
 
             if (in_array($fileExtension, $allowedfileExtensions)){            
                 $dest_path = $uploadFileDir . $newFileName;
@@ -31,19 +30,48 @@ if(!empty($_POST)){
                     $isek = false;
                 }
             }
+
+            if($_POST["user_pass"]!=''){
+                $user_pass = md5($_POST["user_pass"]);
+            }
+            else{
+                $user_pass = $_POST["oldpass"];
+            }
+
+            $iuser = new data();
+            $iuser->update('tbl_pengguna',[
+                'user_nama'=>$user_nama,
+                'user_phone'=>$user_phone,
+                'user_pass'=>$user_pass,
+                'user_gambar'=> $newFileName,
+                'user_email'=>$user_email
+            ],"user_id ='".$user_id."'");
+
+            
         }
-        
-        $iuser = new data();
-        $iuser->update('tbl_pengguna',[
-            'user_nama'=>$user_nama,
-            'user_nokp'=>$user_nokp,
-            'user_email'=>$user_email
-        ],"user_id ='".$_POST["user_id"]."'");
+        else{
+            if($_POST["user_pass"]!=''){
+                $user_pass = md5($_POST["user_pass"]);
+            }
+            else{
+                $user_pass = $_POST["oldpass"];
+            }
 
+            $iuser = new data();
+            $iuser->update('tbl_pengguna',[
+                'user_nama'=>$user_nama,
+                'user_phone'=>$user_phone,
+                'user_pass'=>$user_pass,
+                'user_email'=>$user_email
+            ],"user_id ='".$user_id."'");
+        }
 
-    if($iuser == true){  
-        
-    }
-}  
+        if($iuser){  
+            header('location:../main.php');
+        }  
+} 
+else{
+    echo 'Error';
+} 
      
 ?>

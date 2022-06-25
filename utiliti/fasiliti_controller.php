@@ -1,4 +1,5 @@
 <?php  
+session_start();
 include('data.php');
 
 if(!empty($_POST)){

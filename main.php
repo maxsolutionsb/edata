@@ -9,6 +9,7 @@ INNER JOIN tbl_pengguna_role ON tbl_pengguna.user_id = tbl_pengguna_role.pr_user
 INNER JOIN tbl_sekolah ON tbl_pengguna_role.pr_sekolah_id = tbl_sekolah.sekolah_id",
 "tbl_pengguna.user_id,
 tbl_pengguna.user_nama,
+tbl_pengguna.user_pass,
 tbl_pengguna.user_nokp,
 tbl_pengguna.user_phone,
 tbl_pengguna.user_email,
@@ -181,7 +182,8 @@ $curstat = mysqli_fetch_assoc($statistik);
                   </div>
                   <!-- /.tab-pane -->
                   <div class="tab-pane" id="settings">
-                    <form class="form-horizontal" id="profil_form" action="utiliti/profil_controller.php" method="POST">
+                    <form class="form-horizontal" action="utiliti/profil_controller.php" method="POST" enctype="multipart/form-data">
+                      <input type="text" name="oldpass" value="<?php echo $rowuser['user_pass']; ?>">
                       <div class="form-group row">
                         <label for="inputName" class="col-sm-3 col-form-label">Nama</label>
                         <div class="col-sm-9">
@@ -191,13 +193,19 @@ $curstat = mysqli_fetch_assoc($statistik);
                       <div class="form-group row">
                         <label for="inputName" class="col-sm-3 col-form-label">No. Telefon</label>
                         <div class="col-sm-9">
-                          <input type="email" class="form-control" name="user_phone" id="user_phone" value="<?php echo $rowuser['user_phone']; ?>">
+                          <input type="text" class="form-control" name="user_phone" id="user_phone" value="<?php echo $rowuser['user_phone']; ?>">
                         </div>
                       </div>
                       <div class="form-group row">
                         <label for="inputEmail" class="col-sm-3 col-form-label">E-Mel</label>
                         <div class="col-sm-9">
                           <input type="email" class="form-control" name="user_email" id="user_email" value="<?php echo $rowuser['user_email']; ?>">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label for="inputName" class="col-sm-3 col-form-label">Katalaluan</label>
+                        <div class="col-sm-9">
+                          <input type="password" class="form-control" name="user_pass" id="user_pass" value="">
                         </div>
                       </div>
                       <div class="form-group row">
@@ -214,7 +222,7 @@ $curstat = mysqli_fetch_assoc($statistik);
                       </div>                      
                       <div class="form-group row">
                         <div class="offset-sm-3 col-sm-9">
-                          <button type="submit" class="btn btn-danger">Kemaskini</button>
+                          <button type="submit" class="btn btn-danger" id="hantar">Kemaskini</button>
                         </div>
                       </div>
                     </form>
@@ -235,94 +243,18 @@ $curstat = mysqli_fetch_assoc($statistik);
   </div>
   <!-- /.content-wrapper -->
 
-  <!-- MODAL -->
-  <div class="modal fade" id="modal-default">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <form class="form-horizontal">
-          <div class="modal-header">
-            <h4 class="modal-title">Kemakini Maklumat Sekolah</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            
-              <div class="form-group row">
-                <label for="inputName" class="col-sm-3 col-form-label">Kod</label>
-                <div class="col-sm-9">
-                  <input type="text" class="form-control" id="inputName" placeholder="Kod Sekolah">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label for="inputEmail" class="col-sm-3 col-form-label">Nama</label>
-                <div class="col-sm-9">
-                  <input type="text" class="form-control" id="inputEmail" placeholder="Nama Sekolah">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label for="inputName2" class="col-sm-3 col-form-label">Alamat</label>
-                <div class="col-sm-9">
-                  <input type="text" class="form-control" id="inputName2" placeholder="Baris 1">
-                </div>
-                <label for="inputName2" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 mt-1">
-                  <input type="text" class="form-control" id="inputName2" placeholder="Baris 2">
-                </div>
-                <label for="inputName2" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 mt-1">
-                  <input type="text" class="form-control" id="inputName2" placeholder="Baris 3">
-                </div>
-                <label for="inputName2" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-4 mt-1">
-                  <input type="text" class="form-control" id="inputName2" placeholder="Poskod">
-                </div>
-                <div class="col-sm-5 mt-1">
-                  <select class="form-control select2" style="width: 100%;">
-                    <option selected="selected">--Sila  pilih negeri--</option>
-                    <option>W.P. Kuala Lumpur</option>
-                    <option>W.P. Putraaya</option>
-                    <option>W.P. Labuan</option>
-                  </select>
-                </div>
-                <label for="inputName2" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-4 mt-1">
-                  <select class="form-control select2" style="width: 100%;">
-                    <option selected="selected">--Sila  pilih daerah--</option>
-                    <option>Sentul</option>
-                    <option>Selayang</option>
-                    <option>Kepung</option>
-                    <option>Bandar Utama</option>
-                    <option>Segambut</option>
-                    <option>Jinjang</option>
-                  </select>
-                </div>
-              </div>
-              <div class="form-group row">
-                <label for="inputSkills" class="col-sm-3 col-form-label">No Telefon</label>
-                <div class="col-sm-9">
-                  <input type="text" class="form-control" id="inputSkills" placeholder="No Telefon Sekolah">
-                </div>
-              </div>
-          </div>
-          <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-            <button type="submit" class="btn btn-danger">Simpan</button>
-          </div>        
-        </form>
-      </div>
-      <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-  </div>
-
   <?php 
   include('upper_footer.php');
   ?>
+  <!-- bs-custom-file-input -->
+  <script src="plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
   <!-- ChartJS -->
   <script src="plugins/chart.js/Chart.min.js"></script>
   <script>
      $(function () {
+
+      // file input name
+      bsCustomFileInput.init();
 
       var donutData = {
         labels: [

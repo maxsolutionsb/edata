@@ -1,4 +1,5 @@
 <?php  
+session_start();
 include('data.php');
 include 'include.php';
 
@@ -21,13 +22,13 @@ if(!empty($_POST)){
         $pr_sekolah_id = $_POST["pr_sekolah_id"];
         $pr_role = $_POST["pr_role"]; 
         
+        
         if($_POST["user_id"] != '')  
         {  
             $iuser = new data();
             $iuser->update('tbl_pengguna',[
                 'user_nama'=>$user_nama,
                 'user_nokp'=>$user_nokp,
-                'user_pass'=>'password(123)',
                 'user_email'=>$user_email
             ],"user_id ='".$_POST["user_id"]."'");
 
@@ -41,11 +42,12 @@ if(!empty($_POST)){
         }  
         else  
         {  
+            $user_pass = md5($user_nokp);
             $iuser1 = new data();
             $curr_id =  $iuser1->insert1('tbl_pengguna',[
                 'user_nama'=>$user_nama,
                 'user_nokp'=>$user_nokp,
-                'user_pass'=>'password(123)',
+                'user_pass'=>$user_pass,
                 'user_email'=>$user_email
             ]);
             if(isset($curr_id)){
