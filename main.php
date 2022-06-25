@@ -183,7 +183,7 @@ $curstat = mysqli_fetch_assoc($statistik);
                   <!-- /.tab-pane -->
                   <div class="tab-pane" id="settings">
                     <form class="form-horizontal" action="utiliti/profil_controller.php" method="POST" enctype="multipart/form-data">
-                      <input type="text" name="oldpass" value="<?php echo $rowuser['user_pass']; ?>">
+                      <input type="hidden" name="oldpass" value="<?php echo $rowuser['user_pass']; ?>">
                       <div class="form-group row">
                         <label for="inputName" class="col-sm-3 col-form-label">Nama</label>
                         <div class="col-sm-9">
