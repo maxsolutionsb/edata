@@ -70,7 +70,6 @@ $sekolah = $list->sql;
               <th width="5%">Okt</th>
               <th width="5%">Nov</th>
               <th width="5%">Dis</th>
-              <th width="5%">#</th>
           </tr>
           </thead>
           <tbody>
@@ -107,11 +106,6 @@ $sekolah = $list->sql;
             echo '<td class="text-center" colspan="12">Tiada Rekod</td>';
           }
           ?>
-            <td>
-              <a href="#" id="<?php echo $row['sekolah_id']; ?>" class="btn btn-xs btn-info edit_data" title="Kemaskini">
-                  <i class="fas fa-edit"></i>
-              </a>
-            </td>
         </tr>
 
       <?php
