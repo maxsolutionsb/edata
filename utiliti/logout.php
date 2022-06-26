@@ -1,6 +1,7 @@
-<?php   
-session_start(); //to ensure you are using same session
+<?php
+session_start();
 session_destroy(); //destroy the session
-header("location:../index.php"); //to redirect back to "index.php" after logging out
-exit();
+echo "<script type='text/javascript'>alert('Anda telah keluar sistem Terima kasih');";
+echo "window.location = '../index.php';</script>";
+exit;
 ?>

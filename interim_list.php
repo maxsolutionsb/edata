@@ -57,9 +57,13 @@ $interim = $list->sql;
       <div class="container-fluid">
         <div class="row">
         <div class="col-sm-12"> 
-          <div class="text-right">  
+        <?php
+        if($_SESSION['UKIDRole']==3){
+          echo '<div class="text-right">  
               <button type="button" name="add" id="add" class="btn btn-success">Muat naik</button>  
-          </div>  
+          </div>';
+        }
+        ?>  
           <br />
           <div id="interim_table">
             <table id="example1" class="table table-bordered table-striped">
@@ -287,7 +291,7 @@ $(document).ready(function(){
         $('#inter_jenis').val(data.inter_jenis);
         $('#inter_kuantiti').val(data.inter_kuantiti); 
         $('#insert').html("Kemaskini");  
-        $('#add_interim').modal('show');  
+        $('#add_interim').modal('show'); 
       }  
     });  
   });  
@@ -313,9 +317,7 @@ $(document).ready(function(){
     {  
       $.ajax({  
         url:"utiliti/interim_controller.php",
-        // contentType: 'multipart/form-data',
         method:"POST",
-        // data:$('#insert_form').serialize(),
         data: new FormData( this ),
         processData: false,
         contentType: false,

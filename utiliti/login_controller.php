@@ -29,8 +29,10 @@ if(!empty($_POST)){
         $_SESSION['UKIDPPD'] = $row['pr_ppd_id'];
         header('location:../main.php');
     }
-    else{       
-        header('location:../index.php');
+    else{ 
+        echo "<script type='text/javascript'>alert('Login ID / Katalaluan Salah, sila cuba lagi');";
+        echo "window.location = '../index.php';</script>";
+        exit;
     }
 }  
      

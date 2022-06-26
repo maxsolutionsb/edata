@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50733
 File Encoding         : 65001
 
-Date: 2022-06-23 16:16:48
+Date: 2022-06-26 17:23:00
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -45,13 +45,14 @@ CREATE TABLE `tbl_internet_interim` (
   `inter_file` varchar(255) DEFAULT NULL,
   `inter_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1-Aktif; 2-Tidak Aktif',
   PRIMARY KEY (`interim_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of tbl_internet_interim
 -- ----------------------------
 INSERT INTO `tbl_internet_interim` VALUES ('20', '10000600', 'Januari', 'Celcom', '3', '10000600-Januari.pdf', '1');
 INSERT INTO `tbl_internet_interim` VALUES ('21', '10000600', 'Februari', 'TM', '3', '10000600-Februari.pdf', '1');
+INSERT INTO `tbl_internet_interim` VALUES ('22', '10000595', 'Januari', 'Celcom', '3', '10000595-Januari.txt', '1');
 
 -- ----------------------------
 -- Table structure for `tbl_jenis_sekolah`
@@ -117,7 +118,7 @@ DROP TABLE IF EXISTS `tbl_pengguna`;
 CREATE TABLE `tbl_pengguna` (
   `user_id` int(6) NOT NULL AUTO_INCREMENT,
   `user_nama` varchar(255) NOT NULL,
-  `user_nokp` varchar(12) NOT NULL,
+  `user_nokp` varchar(12) DEFAULT NULL,
   `user_phone` varchar(15) DEFAULT NULL,
   `user_email` varchar(150) NOT NULL,
   `user_pass` varchar(100) NOT NULL,
@@ -129,9 +130,9 @@ CREATE TABLE `tbl_pengguna` (
 -- ----------------------------
 -- Records of tbl_pengguna
 -- ----------------------------
-INSERT INTO `tbl_pengguna` VALUES ('1', 'Saya Usop', '8888', '03-58000036', 'emel@emel.com1', '*23AE809DDACAF96AF0FD78ED04B6A265E05AA257', 'usup.jpg', '1');
-INSERT INTO `tbl_pengguna` VALUES ('2', 'YONG YUNG YI', '9999', '03-58000037', 'emel1@emel.com', '*23AE809DDACAF96AF0FD78ED04B6A265E05AA257', null, '1');
-INSERT INTO `tbl_pengguna` VALUES ('3', 'Mohd Ali', '7777', null, 'ali@emel.com', '*23AE809DDACAF96AF0FD78ED04B6A265E05AA257', null, '1');
+INSERT INTO `tbl_pengguna` VALUES ('1', 'Usup bin Keram', '8888', '03-58000036', 'emel@emel.com', '202cb962ac59075b964b07152d234b70', 'profile-1.png', '1');
+INSERT INTO `tbl_pengguna` VALUES ('2', 'YONG YUNG YI', '9999', '03-58000037', 'emel1@emel.com', '202cb962ac59075b964b07152d234b70', null, '1');
+INSERT INTO `tbl_pengguna` VALUES ('3', 'Mohd Ali1', '7777', '11111', 'ali@emel.com', '202cb962ac59075b964b07152d234b70', 'profile-3.png', '1');
 
 -- ----------------------------
 -- Table structure for `tbl_pengguna_role`
@@ -219,7 +220,7 @@ CREATE TABLE `tbl_sekolah` (
   `sek_phone` varchar(20) DEFAULT NULL,
   `sek_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1-Aktif; 2-Tidak Aktif',
   PRIMARY KEY (`sekolah_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10000888 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10000890 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of tbl_sekolah
@@ -517,6 +518,8 @@ INSERT INTO `tbl_sekolah` VALUES ('10000884', 'WEB0247', '1002', 'SEKOLAH MENENG
 INSERT INTO `tbl_sekolah` VALUES ('10000885', 'WEB0248', '1002', 'SEKOLAH MENENGAH KEBANGSAAN RAJA ABDULLAH', 'SMK', 'YA', 'Bandar', 'web0248@moe.edu.my', 'OFF JALAN KEPONG 52000 KUALA LUMPUR', null, null, '', '100000', '14', '0362580937', '1');
 INSERT INTO `tbl_sekolah` VALUES ('10000886', 'WEB0249', '1002', 'SEKOLAH MENENGAH KEBANGSAAN JINJANG', 'SMK', 'YA', 'Bandar', 'web0249@moe.edu.my', 'JALAN JINJANG SETIA, JINJANG UTARA 52000 KUALA LUMPUR', null, null, '', '100000', '14', '0362576438', '1');
 INSERT INTO `tbl_sekolah` VALUES ('10000887', 'WRA0004', '1002', 'SMA KUALA LUMPUR', 'SMK AGAMA', 'YA', 'Bandar', 'wra0004@moe.edu.my', 'BANDAR MENJALARA, KEPONG 52100 KUALA LUMPUR', null, null, '', '100000', '14', '0362758923', '1');
+INSERT INTO `tbl_sekolah` VALUES ('10000888', 'WBA0067', '1001', 'SMK PUTRAJAYA P17', 'SMK', 'TIDAK', 'Bandar', 'emel@emel.com', 'Test baris 1', 'Test baris 2', 'Test baris 3', '50480', '100000', '14', '0326925164', '1');
+INSERT INTO `tbl_sekolah` VALUES ('10000889', 'AA11223', '1001', 'Tes Sekolah1', 'Kolej VK', 'YA', 'Bandar', 'emel@emel.com', 'Test baris 1', 'Test baris 2', '', '50480', '100000', '14', '12333', '1');
 
 -- ----------------------------
 -- Table structure for `tbl_sekolah_fasiliti`
@@ -530,7 +533,7 @@ CREATE TABLE `tbl_sekolah_fasiliti` (
   `fas_kuantiti` int(2) NOT NULL,
   `fas_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1-Aktif; 2-Tidak Aktif',
   PRIMARY KEY (`fasiliti_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of tbl_sekolah_fasiliti
@@ -545,9 +548,16 @@ INSERT INTO `tbl_sekolah_fasiliti` VALUES ('25', '10000741', 'Bilik Angkasa', 'B
 INSERT INTO `tbl_sekolah_fasiliti` VALUES ('26', '10000595', 'Bilik Angkasa 2', 'Makmal Komputer', '50', '1');
 INSERT INTO `tbl_sekolah_fasiliti` VALUES ('27', '10000601', 'Bilik Angkasa 2', 'Bilik Komputer', '25', '1');
 INSERT INTO `tbl_sekolah_fasiliti` VALUES ('28', '10000601', 'Pusat Data', 'Pusat Akses', '5', '1');
+INSERT INTO `tbl_sekolah_fasiliti` VALUES ('29', '10000595', 'Pusat Data', 'Bilik Komputer', '5', '1');
 
 -- ----------------------------
 -- View structure for `vwinterimreport`
 -- ----------------------------
 DROP VIEW IF EXISTS `vwinterimreport`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vwinterimreport` AS select `tbl_internet_interim`.`interim_id` AS `interim_id`,`tbl_internet_interim`.`inter_sek_id` AS `inter_sek_id`,if((`tbl_internet_interim`.`inter_bulan` = 'Januari'),1,0) AS `jan`,if((`tbl_internet_interim`.`inter_bulan` = 'Februari'),1,0) AS `feb`,if((`tbl_internet_interim`.`inter_bulan` = 'Mac'),1,0) AS `mac`,if((`tbl_internet_interim`.`inter_bulan` = 'April'),1,0) AS `apr`,if((`tbl_internet_interim`.`inter_bulan` = 'Mei'),1,0) AS `mei`,if((`tbl_internet_interim`.`inter_bulan` = 'Jun'),1,0) AS `jun`,if((`tbl_internet_interim`.`inter_bulan` = 'Julai'),1,0) AS `jul`,if((`tbl_internet_interim`.`inter_bulan` = 'Ogos'),1,0) AS `ogo`,if((`tbl_internet_interim`.`inter_bulan` = 'September'),1,0) AS `sep`,if((`tbl_internet_interim`.`inter_bulan` = 'Oktober'),1,0) AS `okt`,if((`tbl_internet_interim`.`inter_bulan` = 'November'),1,0) AS `nov`,if((`tbl_internet_interim`.`inter_bulan` = 'Disember'),1,0) AS `dis` from `tbl_internet_interim` where (`tbl_internet_interim`.`inter_sek_id` = 10000600);
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vwinterimreport` AS select `tbl_internet_interim`.`interim_id` AS `interim_id`,`tbl_internet_interim`.`inter_sek_id` AS `inter_sek_id`,`tbl_sekolah`.`sek_ppd_id` AS `sek_ppd_id`,if((`tbl_internet_interim`.`inter_bulan` = 'Januari'),1,0) AS `jan`,if((`tbl_internet_interim`.`inter_bulan` = 'Februari'),1,0) AS `feb`,if((`tbl_internet_interim`.`inter_bulan` = 'Mac'),1,0) AS `mac`,if((`tbl_internet_interim`.`inter_bulan` = 'April'),1,0) AS `apr`,if((`tbl_internet_interim`.`inter_bulan` = 'Mei'),1,0) AS `mei`,if((`tbl_internet_interim`.`inter_bulan` = 'Jun'),1,0) AS `jun`,if((`tbl_internet_interim`.`inter_bulan` = 'Julai'),1,0) AS `jul`,if((`tbl_internet_interim`.`inter_bulan` = 'Ogos'),1,0) AS `ogo`,if((`tbl_internet_interim`.`inter_bulan` = 'September'),1,0) AS `sep`,if((`tbl_internet_interim`.`inter_bulan` = 'Oktober'),1,0) AS `okt`,if((`tbl_internet_interim`.`inter_bulan` = 'November'),1,0) AS `nov`,if((`tbl_internet_interim`.`inter_bulan` = 'Disember'),1,0) AS `dis`,`tbl_sekolah`.`sek_nama` AS `sek_nama` from (`tbl_internet_interim` join `tbl_sekolah` on((`tbl_internet_interim`.`inter_sek_id` = `tbl_sekolah`.`sekolah_id`))) where (`tbl_internet_interim`.`inter_sek_id` = 10000600);
+
+-- ----------------------------
+-- View structure for `vwlaporan`
+-- ----------------------------
+DROP VIEW IF EXISTS `vwlaporan`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vwlaporan` AS select `a`.`inter_sek_id` AS `inter_sek_id`,`b`.`sek_nama` AS `sek_nama`,`b`.`sek_ppd_id` AS `sek_ppd_id`,sum((case when (`a`.`inter_bulan` = 'Januari') then 1 else 0 end)) AS `JAN`,sum((case when (`a`.`inter_bulan` = 'Februari') then 1 else 0 end)) AS `FEB`,sum((case when (`a`.`inter_bulan` = 'Mac') then 1 else 0 end)) AS `MAC`,sum((case when (`a`.`inter_bulan` = 'April') then 1 else 0 end)) AS `APR`,sum((case when (`a`.`inter_bulan` = 'Mei') then 1 else 0 end)) AS `MEI`,sum((case when (`a`.`inter_bulan` = 'Jun') then 1 else 0 end)) AS `JUN`,sum((case when (`a`.`inter_bulan` = 'Julai') then 1 else 0 end)) AS `JUL`,sum((case when (`a`.`inter_bulan` = 'Ogos') then 1 else 0 end)) AS `OGO`,sum((case when (`a`.`inter_bulan` = 'September') then 1 else 0 end)) AS `SEP`,sum((case when (`a`.`inter_bulan` = 'Oktober') then 1 else 0 end)) AS `OKT`,sum((case when (`a`.`inter_bulan` = 'November') then 1 else 0 end)) AS `NOV`,sum((case when (`a`.`inter_bulan` = 'Disember') then 1 else 0 end)) AS `DIS` from (`tbl_internet_interim` `a` left join `tbl_sekolah` `b` on((`a`.`inter_sek_id` = `b`.`sekolah_id`))) group by `a`.`inter_sek_id`;

@@ -78,18 +78,18 @@ $sekolah = $list->sql;
         <tr>
             <td><?php echo $bil++; ?></td>
             <td><?php echo $row['sek_nama']; ?></td>
-            <td class="text-center"><?php if($row['JAN']==1) echo '<i class="fas fa-check text-primary"></i>'; else echo '<i class="fas fa-times text-danger"></i>'; ?></td>
-            <td class="text-center"><?php if($row['FEB']==1) echo '<i class="fas fa-check text-primary"></i>'; else echo '<i class="fas fa-times text-danger"></i>'; ?></td>
-            <td class="text-center"><?php if($row['MAC']==1) echo '<i class="fas fa-check text-primary"></i>'; else echo '<i class="fas fa-times text-danger"></i>'; ?></td>
-            <td class="text-center"><?php if($row['APR']==1) echo '<i class="fas fa-check text-primary"></i>'; else echo '<i class="fas fa-times text-danger"></i>'; ?></td>
-            <td class="text-center"><?php if($row['MEI']==1) echo '<i class="fas fa-check text-primary"></i>'; else echo '<i class="fas fa-times text-danger"></i>'; ?></td>
-            <td class="text-center"><?php if($row['JUN']==1) echo '<i class="fas fa-check text-primary"></i>'; else echo '<i class="fas fa-times text-danger"></i>'; ?></td>
-            <td class="text-center"><?php if($row['JUL']==1) echo '<i class="fas fa-check text-primary"></i>'; else echo '<i class="fas fa-times text-danger"></i>'; ?></td>
-            <td class="text-center"><?php if($row['OGO']==1) echo '<i class="fas fa-check text-primary"></i>'; else echo '<i class="fas fa-times text-danger"></i>'; ?></td>
-            <td class="text-center"><?php if($row['SEP']==1) echo '<i class="fas fa-check text-primary"></i>'; else echo '<i class="fas fa-times text-danger"></i>'; ?></td>
-            <td class="text-center"><?php if($row['OKT']==1) echo '<i class="fas fa-check text-primary"></i>'; else echo '<i class="fas fa-times text-danger"></i>'; ?></td>
-            <td class="text-center"><?php if($row['NOV']==1) echo '<i class="fas fa-check text-primary"></i>'; else echo '<i class="fas fa-times text-danger"></i>'; ?></td>
-            <td class="text-center"><?php if($row['DIS']==1) echo '<i class="fas fa-check text-primary"></i>'; else echo '<i class="fas fa-times text-danger"></i>'; ?></td>
+            <td><?php if($row['jan']==1) echo '<i class="fas fa-check"></i>'; else echo '<i class="fas fa-times"></i>'; ?></td>
+            <td><?php if($row['feb']==1) echo '<i class="fas fa-check"></i>'; else echo '<i class="fas fa-times"></i>'; ?></td>
+            <td><?php if($row['mac']==1) echo '<i class="fas fa-check"></i>'; else echo '<i class="fas fa-times"></i>'; ?></td>
+            <td><?php if($row['apr']==1) echo '<i class="fas fa-check"></i>'; else echo '<i class="fas fa-times"></i>'; ?></td>
+            <td><?php if($row['mei']==1) echo '<i class="fas fa-check"></i>'; else echo '<i class="fas fa-times"></i>'; ?></td>
+            <td><?php if($row['jun']==1) echo '<i class="fas fa-check"></i>'; else echo '<i class="fas fa-times"></i>'; ?></td>
+            <td><?php if($row['jul']==1) echo '<i class="fas fa-check"></i>'; else echo '<i class="fas fa-times"></i>'; ?></td>
+            <td><?php if($row['ogo']==1) echo '<i class="fas fa-check"></i>'; else echo '<i class="fas fa-times"></i>'; ?></td>
+            <td><?php if($row['sep']==1) echo '<i class="fas fa-check"></i>'; else echo '<i class="fas fa-times"></i>'; ?></td>
+            <td><?php if($row['okt']==1) echo '<i class="fas fa-check"></i>'; else echo '<i class="fas fa-times"></i>'; ?></td>
+            <td><?php if($row['nov']==1) echo '<i class="fas fa-check"></i>'; else echo '<i class="fas fa-times"></i>'; ?></td>
+            <td><?php if($row['dis']==1) echo '<i class="fas fa-check"></i>'; else echo '<i class="fas fa-times"></i>'; ?></td>
         </tr>
       <?php } ?>
         </tbody>
@@ -123,6 +123,14 @@ $sekolah = $list->sql;
 <script src="plugins/sweetalert2/sweetalert2.min.js"></script>
 <!-- Toastr -->
 <script src="plugins/toastr/toastr.min.js"></script>
+<script>
+$(document).ready(function(){ 
+  $("#example1").DataTable({
+          "responsive": true, "lengthChange": false, "autoWidth": false,
+          "buttons": ["excel", "pdf", "print"]
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)'); 
+   
+});  
 </script>
 
 

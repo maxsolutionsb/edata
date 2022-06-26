@@ -66,8 +66,8 @@ if(!empty($_POST["user_nama"])){
             ],"user_id ='".$user_id."'");
         }
 
-        if($iuser){  
-            header('location:../main.php');
+        if($iuser){ 
+            header('location:logout.php');
         }  
 } 
 else{

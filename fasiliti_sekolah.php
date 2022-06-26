@@ -333,7 +333,8 @@ $(document).ready(function(){
         success:function(data){  
           $('#insert_form')[0].reset();  
           $('#add_fasiliti').modal('hide');  
-          $('#fasiliti_table').html(data); 
+          $('#fasiliti_table').html(data);
+          location.reload();
           toastr.success(mesej);
         }  
       });  
@@ -349,8 +350,8 @@ $(document).ready(function(){
         $('#delete_form')[0].reset();  
         $('#padam_fasiliti').modal('hide');  
         $('#fasiliti_table').html(data);
+        location.reload();
         toastr.error('Rekod berjaya dipadam');
-
       }  
     });   
   });
