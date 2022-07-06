@@ -47,6 +47,17 @@ SUM(if(tbl_sekolah_fasiliti.fas_jenis='Makmal Komputer',1,0)) AS makKomp,
 SUM(if(tbl_sekolah_fasiliti.fas_jenis='Pusat Akses',1,0)) AS pusAkses", $where);
 $statistik = $stat->sql;
 $curstat = mysqli_fetch_assoc($statistik);
+if($curstat['bilKomp']==null && $curstat['makKomp']==null && $curstat['pusAkses']==null){
+  $curstat['bilKomp']=0;
+  $curstat['makKomp']=0;
+  $curstat['pusAkses']=0;
+  // $stat0 = new data();
+  // $stat0->select("",
+  // "0 AS bilKomp, 0 AS makKomp, 0 AS pusAkses");
+  // $statistik0 = $stat0->sql;
+  // $curstat = mysqli_fetch_assoc($statistik0);
+}
+
 ?>
 
     <!-- Content Header (Page header) -->
@@ -144,7 +155,7 @@ $curstat = mysqli_fetch_assoc($statistik);
                        alt="User profile picture">
                 </div>
 
-                <h3 class="profile-username text-center"><?php echo strtoupper($rowuser['user_nama']); ?></h3>
+                <h3 class="profile-username text-center"><?php echo strtoupper($rowuser['user_nama']); echo $statistik->num_rows; ?></h3>
 
                 <p class="text-muted text-center"><?php echo userRole($rowuser['pr_role']); ?></p>
 
