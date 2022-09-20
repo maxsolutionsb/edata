@@ -35,7 +35,14 @@
               </p>
             </a>
           </li>
-          
+          <li class="nav-item">
+            <a href="tempahan_list.php" class="nav-link">
+              <i class="nav-icon fas fa-building"></i>
+              <p>
+                Tempahan Fasiliti
+              </p>
+            </a>
+          </li>
           <?php if($_SESSION['UKIDRole']==1){ ?>
           <li class="nav-item">
             <a href="staff_list.php" class="nav-link">
