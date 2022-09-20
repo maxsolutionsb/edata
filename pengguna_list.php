@@ -85,7 +85,6 @@ $user = $list->sql;
                     </a>
                   </td>
               </tr>
-
             <?php
               }
 

@@ -1,110 +1,120 @@
 <?php 
 include 'utiliti/data.php';
-session_start();
+include('header.php'); 
+
+$where="";
+if($_SESSION['UKIDRole']==1){
+  $where = "";
+}
+else if($_SESSION['UKIDRole']==2){
+  $where = "tbl_sekolah.sek_ppd_id = ".$_SESSION['UKIDPPD'];
+}
+else{
+  $where = "tbl_sekolah.sekolah_id = ".$_SESSION['UKIDSekolah'];
+}
+
+$list = new data();
+$list->select("
+tbl_tempahan
+INNER JOIN tbl_sekolah_fasiliti ON tbl_tempahan.temp_fasiliti_id = tbl_sekolah_fasiliti.fasiliti_id
+INNER JOIN tbl_sekolah ON tbl_sekolah_fasiliti.fas_sek_id = tbl_sekolah.sekolah_id",
+"tbl_tempahan.tempahan_id,
+tbl_tempahan.temp_kegunaan,
+tbl_tempahan.temp_sdate,
+tbl_tempahan.temp_edate,
+tbl_tempahan.temp_status,
+tbl_sekolah_fasiliti.fas_nama,
+tbl_sekolah.sek_ppd_id,
+tbl_sekolah_fasiliti.fas_sek_id", $where);
+$tempahan = $list->sql;
+
+$lsfasiliti = new data();
+$lsfasiliti->select("tbl_sekolah_fasiliti","*"," fas_sek_id = ".$_SESSION['UKIDSekolah'] );
+$fasiliti = $lsfasiliti->sql;
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Aplikasi eData</title>
+  <!-- SweetAlert2 -->
+  <link rel="stylesheet" href="plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+  <!-- Toastr -->
+  <link rel="stylesheet" href="plugins/toastr/toastr.min.css">
 
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-  <!-- fullCalendar -->
-  <link rel="stylesheet" href="plugins/fullcalendar/main.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/adminlte.min.css">
-</head>
-<body class="hold-transition sidebar-mini">
-<div class="wrapper">
-  <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-    <!-- Left navbar links -->
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">Home</a>
-      </li>
-    </ul>
-  </nav>
-  <!-- /.navbar -->
 
-  <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <!-- Brand Logo -->
-    <a href="#" class="brand-link">
-      <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">eData</span>
-    </a>
-
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <!-- Sidebar user (optional) -->
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-          <?php
-            if(($_SESSION['UKLoginGambar'])==""){
-              $gambar = 'unknown_user.jpg';
-            }
-            else{
-              $gambar = $_SESSION['UKLoginGambar'];
-            }
-          ?>
-          <img src="files/profil/<?php echo $gambar; ?>" class="img-circle elevation-2" alt="User Image">
-        </div>
-        <div class="info">
-          <a href="#" class="d-block"><?php echo $_SESSION['UKLoginNama']; ?></a>
-        </div>
-      </div>
-
-      <!-- Sidebar Menu -->
-      <?php include('menu.php'); ?>
-      <!-- /.sidebar-menu -->
-    </div>
-    <!-- /.sidebar -->
-  </aside>
-
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Calendar</h1>
+            <h1>Senarai Tempahan</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Utama</a></li>
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item active">Tempahan</li>
             </ol>
           </div>
         </div>
       </div><!-- /.container-fluid -->
     </section>
-
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <div class="row">          
-          <!-- /.col -->
-          <div class="col-md-12">
-            <div class="card card-primary">
-              <div class="card-body p-0">
-                <!-- THE CALENDAR -->
-                <div id="calendar"></div>
-              </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-          </div>
-          <!-- /.col -->
+      <div class="row">
+        <div class="col-sm-12">
+      <?php
+      if($_SESSION['UKIDRole']!=3){ ?>
+    
+        <div class="text-right">  
+            <button type="button" name="add" id="add" class="btn btn-success">Tambah</button>  
         </div>
+      <?php } ?>  
+        <br />
+        <div id="tempahan_table">
+        <table id="example1" class="table table-bordered table-striped">
+          <thead>
+          <tr>
+              <th width="5%">Bil</th>
+              <th width="25%">Fasiliti</th>
+              <th width="30%">Kegunaan</th>
+              <th width="10%">Mula</th>
+              <th width="10%">Tamat</th>
+              <th width="10%">Status</th>
+              <th width="10%">#</th>
+          </tr>
+          </thead>
+          <tbody>
+      <?php
+        $bil=1;
+        if($tempahan->num_rows > 0){
+          while($row = mysqli_fetch_assoc($tempahan)){
+      ?>
+        <tr>
+            <td><?php echo $bil++; ?></td>
+            <td><?php echo $row['fas_nama']; ?></td>
+            <td><?php echo $row['temp_kegunaan']; ?></td>
+            <td><?php echo date('d-m-Y', strtotime($row['temp_sdate'])); ?></td>
+            <td><?php echo date('d-m-Y', strtotime($row['temp_edate'])); ?></td>
+            <td><?php echo $row['temp_status']; ?></td>
+            <td>
+              <a href="#" id="<?php echo $row['tempahan_id']; ?>" class="btn btn-xs btn-info edit_data" title="Kemaskini">
+                  <i class="fas fa-edit"></i>
+              </a>
+              <a href="#" id="<?php echo $row['tempahan_id']; ?>" class="btn btn-xs btn-danger del_data" title="Padam">
+                  <i class="fas fa-trash"></i>
+              </a>
+            </td>
+        </tr>
+
+      <?php
+          }
+        } else{
+          echo '<tr><td class="text-center" colspan="7"><i>Tiada Rekod</i></td></tr>';
+        }
+
+      ?>
+          </tbody>
+        </table>
+        </div>
+      </div>
+      </div>
         <!-- /.row -->
       </div><!-- /.container-fluid -->
     </section>
@@ -112,102 +122,234 @@ session_start();
   </div>
   <!-- /.content-wrapper -->
 
-  <footer class="main-footer">
-    <div class="float-right d-none d-sm-block">
-      <b>Versi</b> 1.0
+  <!-- MODAL -->
+  <div class="modal fade" id="add_tempahan">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <form class="form-horizontal" action="" method="post" id="insert_form">
+          <input type="hidden" name="tempahan_id" id="tempahan_id">
+          <div class="modal-header">
+            <h4 class="modal-title">Maklumat Tempahan</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group row">
+              <label for="temp_fasiliti_id" class="col-sm-3 col-form-label">Fasiliti</label>
+              <div class="col-sm-9">
+                <select class="form-control select2" id="temp_fasiliti_id" name="temp_fasiliti_id" style="width: 100%;">
+                  <option selected="selected" value="">--Sila  pilih--</option>
+                  <?php
+                  while($row = mysqli_fetch_assoc($fasiliti)){
+                    echo '<option value="'.$row['fasiliti_id'].'">'.$row['fas_nama'].'</option>';
+                  }
+                  ?>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="no_telefon" class="col-sm-3 col-form-label">Tujuan</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" id="temp_kegunaan" name="temp_kegunaan">
+              </div>
+            </div>
+            <div class="form-group row">              
+              <label for="poskod" class="col-sm-3 col-form-label">Tarikh Mula/Tamat</label>               
+              <div class="col-sm-5 mt-1">
+                <input type="text" class="form-control" id="temp_sdate" name="temp_sdate" placeholder="Tarikh Mula">
+              </div>
+              <div class="col-sm-4 mt-1">
+                <input type="text" class="form-control" id="temp_edate" name="temp_edate" placeholder="Tarikh Tamat">
+              </div>                
+            </div>
+            <div class="form-group row">              
+              <label for="poskod" class="col-sm-3 col-form-label">Status</label>               
+              <div class="col-sm-5 mt-1">
+                <select class="form-control select2" id="temp_status" name="temp_status" style="width: 100%;">
+                  <option value="1">Baru</option>
+                  <option value="2">Sah</option>
+                  <option value="3">Tidak Sah</option>
+                  <option value="4">Batal</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+            <button type="submit" class="btn btn-danger" id="insert">Simpan</button>
+          </div> 
+        </form>
+      </div>
+      <!-- /.modal-content -->
     </div>
-    <strong>Copyright &copy; <?php echo date('Y'); ?> <a href="#">e-DATA</a>.</strong> Hakcipta terpelihara.
-  </footer>
+    <!-- /.modal-dialog -->
+  </div>
 
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
-</div>
-<!-- ./wrapper -->
+  <div class="modal fade" id="padam_sekolah">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <form class="form-horizontal" action="" method="post" id="delete_form">
+          <div class="modal-header">
+            <h4 class="modal-title">Padam Rekod</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Adakah anda pasti?</p>
+            <input type="hidden" name="del_tempahan_id" id="del_tempahan_id">
+            <input type="hidden" name="del_action" value="Padam">
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Tidak</button>
+            <button type="submit" id="btn_del_sekolah" class="btn btn-danger">Ya</button>
+          </div>
+        </form>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
 
-<!-- jQuery -->
-<script src="plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- jQuery UI -->
-<script src="plugins/jquery-ui/jquery-ui.min.js"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/adminlte.min.js"></script>
-<!-- fullCalendar 2.2.5 -->
-<script src="plugins/moment/moment.min.js"></script>
-<script src="plugins/fullcalendar/main.js"></script>
-<!-- Page specific script -->
+<?php include('upper_footer.php'); ?>
+<!-- DataTables  & Plugins -->
+<script src="plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="plugins/jszip/jszip.min.js"></script>
+<script src="plugins/pdfmake/pdfmake.min.js"></script>
+<script src="plugins/pdfmake/vfs_fonts.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+<!-- SweetAlert2 -->
+<script src="plugins/sweetalert2/sweetalert2.min.js"></script>
+<!-- Toastr -->
+<script src="plugins/toastr/toastr.min.js"></script>
 <script>
-  $(function () {
-    var date = new Date()
-    var d    = date.getDate(),
-        m    = date.getMonth(),
-        y    = date.getFullYear()
+$(document).ready(function(){ 
+  $('#add').click(function(){  
+    $('#insert').html("Tambah");  
+    $('#insert_form')[0].reset(); 
+    $('#add_tempahan').modal('show');  
+  });
+  
+  // DELETE RECORD
+  $(document).on('click', '.del_data', function(){ 
+    var tempahan_id = $(this).attr("id");
+    $('#delete_form')[0].reset();    
+    $('#del_tempahan_id').val(tempahan_id);
+    $('#padam_sekolah').modal('show');  
+  }); 
+  
+  $(document).on('click', '.edit_data', function(){  
+    var tempahan_id = $(this).attr("id");  
+    // alert(tempahan_id);
+    $.ajax({  
+      url:"utiliti/data_tempahan.php",  
+      method:"POST",  
+      data:{tempahan_id:tempahan_id},  
+      dataType: "json",  
+      success:function(data){ 
+        $('#tempahan_id').val(data.tempahan_id); 
+        $('#temp_fasiliti_id').val(data.temp_fasiliti_id);  
+        $('#temp_kegunaan').val(data.temp_kegunaan);  
+        $('#temp_sdate').val(data.temp_sdate);  
+        $('#temp_edate').val(data.temp_edate);  
+        $('#temp_status').val(data.temp_status);
+        $('#insert').html("Kemaskini");  
+        $('#add_tempahan').modal('show');  
+      }  
+    });  
+  });  
+  $('#insert_form').on("submit", function(event){  
+    event.preventDefault();  
+    if($('#temp_fasiliti_id').val() == "")  
+    {  
+      alert("Sila pilih Fasiliti");  
+    }  
+    else if($('#temp_kegunaan').val() == '')  
+    {  
+      alert("Sila masukkan Tujuan");  
+    }  
+    else if($('#temp_sdate').val() == '')  
+    {  
+      alert("Sila masukkan tarikh mula");  
+    }  
+    else if($('#temp_edate').val() == '')  
+    {  
+      alert("Sila masukkan tarikh tamat");  
+    }
+    else  
+    {  
+      $.ajax({  
+        url:"utiliti/tempahan_controller.php",  
+        method:"POST",  
+        data:$('#insert_form').serialize(),
+        beforeSend:function(data){  
+          $('#insert').html("Tambah");
+          if(data.tempahan_id==''){
+            mesej = 'Rekod berjaya ditambah';
+          }
+          else{
+            mesej = 'Rekod berjaya dikemaskini';
+          } 
+        },  
+        success:function(data){  
+          $('#insert_form')[0].reset();  
+          $('#add_tempahan').modal('hide');  
+          $('#tempahan_table').html(data); 
+          $("#example1").DataTable({
+            "responsive": true, "lengthChange": false, "autoWidth": false,
+            "buttons": ["excel", "pdf", "print"]
+          }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+          toastr.success(mesej);
+        }  
+      });  
+    }  
+  }); 
+  $('#delete_form').on("submit", function(event){  
+    event.preventDefault();   
+    $.ajax({  
+      url:"utiliti/sekolah_controller.php",  
+      method:"POST",  
+      data:$('#delete_form').serialize(),   
+      success:function(data){  
+        $('#delete_form')[0].reset();  
+        $('#padam_sekolah').modal('hide');  
+        $('#sekolah_table').html(data);
+        $("#example1").DataTable({
+          "responsive": true, "lengthChange": false, "autoWidth": false,
+          "buttons": ["excel", "pdf", "print"]
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)'); 
+        toastr.error('Rekod berjaya dipadam');
 
-    var Calendar = FullCalendar.Calendar;
-    var calendarEl = document.getElementById('calendar');
-    var calendar = new Calendar(calendarEl, {
-      headerToolbar: {
-        left  : 'prev,next today',
-        center: 'title',
-        right : 'dayGridMonth,timeGridWeek,timeGridDay'
-      },
-      themeSystem: 'bootstrap',
-      //Random default events
-      events: [
-        {
-          title          : 'All Day Event',
-          start          : new Date(y, m, 1),
-          backgroundColor: '#f56954', //red
-          borderColor    : '#f56954', //red
-          allDay         : true
-        },
-        {
-          title          : 'Long Event',
-          start          : new Date(y, m, d - 5),
-          end            : new Date(y, m, d - 2),
-          backgroundColor: '#f39c12', //yellow
-          borderColor    : '#f39c12' //yellow
-        },
-        {
-          title          : 'Meeting',
-          start          : new Date(y, m, d, 10, 30),
-          allDay         : false,
-          backgroundColor: '#0073b7', //Blue
-          borderColor    : '#0073b7' //Blue
-        },
-        {
-          title          : 'Lunch',
-          start          : new Date(y, m, d, 12, 0),
-          end            : new Date(y, m, d, 14, 0),
-          allDay         : false,
-          url            : 'https://www.google.com/',
-          backgroundColor: '#00c0ef', //Info (aqua)
-          borderColor    : '#00c0ef' //Info (aqua)
-        },
-        {
-          title          : 'Birthday Party',
-          start          : new Date(y, m, d + 1, 19, 0),
-          end            : new Date(y, m, d + 1, 22, 30),
-          allDay         : false,
-          backgroundColor: '#00a65a', //Success (green)
-          borderColor    : '#00a65a' //Success (green)
-        },
-        {
-          title          : 'Click for Google',
-          start          : new Date(y, m, 28),
-          end            : new Date(y, m, 29),
-          url            : 'https://www.google.com/',
-          backgroundColor: '#3c8dbc', //Primary (light-blue)
-          borderColor    : '#3c8dbc' //Primary (light-blue)
-        }
-      ]
-    });
-
-    calendar.render();
-  })
+      }  
+    });   
+  });
+  $(document).on('click', '.view_data', function(){  
+    var employee_id = $(this).attr("id");  
+    if(employee_id != '')  
+    {  
+      $.ajax({  
+        url:"select.php",  
+        method:"POST",  
+        data:{employee_id:employee_id},  
+        success:function(data){  
+          $('#employee_detail').html(data);  
+          $('#dataModal').modal('show');  
+        }  
+      });  
+    }            
+  }); 
+   
+});  
 </script>
-</body>
-</html>
+
+
+<?php include('bottom_footer.php'); ?>

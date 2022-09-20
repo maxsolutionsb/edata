@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : local
+Source Server         : Local
 Source Server Version : 50733
 Source Host           : localhost:3306
 Source Database       : edata_db
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50733
 File Encoding         : 65001
 
-Date: 2022-06-26 17:23:00
+Date: 2022-09-20 17:46:51
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -549,6 +549,28 @@ INSERT INTO `tbl_sekolah_fasiliti` VALUES ('26', '10000595', 'Bilik Angkasa 2', 
 INSERT INTO `tbl_sekolah_fasiliti` VALUES ('27', '10000601', 'Bilik Angkasa 2', 'Bilik Komputer', '25', '1');
 INSERT INTO `tbl_sekolah_fasiliti` VALUES ('28', '10000601', 'Pusat Data', 'Pusat Akses', '5', '1');
 INSERT INTO `tbl_sekolah_fasiliti` VALUES ('29', '10000595', 'Pusat Data', 'Bilik Komputer', '5', '1');
+
+-- ----------------------------
+-- Table structure for `tbl_tempahan`
+-- ----------------------------
+DROP TABLE IF EXISTS `tbl_tempahan`;
+CREATE TABLE `tbl_tempahan` (
+  `tempahan_id` int(6) NOT NULL AUTO_INCREMENT,
+  `temp_fasiliti_id` int(8) NOT NULL,
+  `temp_kegunaan` varchar(255) NOT NULL,
+  `temp_sdate` datetime NOT NULL,
+  `temp_edate` datetime NOT NULL,
+  `temp_status` int(1) NOT NULL DEFAULT '1' COMMENT '1-Baru; 2-Sah; 3-Tidak Sah; 4-Batal',
+  `temp_created_by` int(6) NOT NULL,
+  `temp_created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `temp_updated_by` int(6) NOT NULL,
+  `temp_updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`tempahan_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of tbl_tempahan
+-- ----------------------------
 
 -- ----------------------------
 -- View structure for `vwinterimreport`
