@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50733
 File Encoding         : 65001
 
-Date: 2022-09-20 17:46:51
+Date: 2022-09-21 17:17:25
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -558,19 +558,21 @@ CREATE TABLE `tbl_tempahan` (
   `tempahan_id` int(6) NOT NULL AUTO_INCREMENT,
   `temp_fasiliti_id` int(8) NOT NULL,
   `temp_kegunaan` varchar(255) NOT NULL,
-  `temp_sdate` datetime NOT NULL,
-  `temp_edate` datetime NOT NULL,
-  `temp_status` int(1) NOT NULL DEFAULT '1' COMMENT '1-Baru; 2-Sah; 3-Tidak Sah; 4-Batal',
-  `temp_created_by` int(6) NOT NULL,
-  `temp_created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `temp_updated_by` int(6) NOT NULL,
-  `temp_updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `temp_sdate` datetime DEFAULT NULL,
+  `temp_edate` datetime DEFAULT NULL,
+  `temp_status` int(1) DEFAULT '1' COMMENT '1-Baru; 2-Sah; 3-Tidak Sah; 4-Batal',
+  `temp_created_by` int(6) DEFAULT NULL,
+  `temp_created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `temp_updated_by` int(6) DEFAULT NULL,
+  `temp_updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`tempahan_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of tbl_tempahan
 -- ----------------------------
+INSERT INTO `tbl_tempahan` VALUES ('1', '27', 'Pinajam je', '2022-09-12 10:00:00', '2022-09-13 11:00:00', '2', null, '2022-09-20 18:15:52', null, '2022-09-21 15:40:47');
+INSERT INTO `tbl_tempahan` VALUES ('2', '28', 'Pinajam je', '2022-09-14 00:00:00', '2022-09-14 00:00:00', '1', null, '2022-09-20 18:22:53', null, '2022-09-20 18:22:53');
 
 -- ----------------------------
 -- View structure for `vwinterimreport`

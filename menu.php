@@ -36,12 +36,27 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="tempahan_list.php" class="nav-link">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-building"></i>
               <p>
                 Tempahan Fasiliti
+                <i class="fas fa-angle-left right"></i>
               </p>
             </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="tempahan_list.php" class="nav-link">
+                  <i class="fas fa-list nav-icon"></i>
+                  <p>Senarai Tempahan</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="kalendar.php" class="nav-link">
+                  <i class="fas fa-calendar nav-icon"></i>
+                  <p>Kalendar Tempahan</p>
+                </a>
+              </li>
+            </ul>
           </li>
           <?php if($_SESSION['UKIDRole']==1){ ?>
           <li class="nav-item">

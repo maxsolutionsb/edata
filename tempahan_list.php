@@ -1,5 +1,6 @@
 <?php 
 include 'utiliti/data.php';
+include 'utiliti/include.php';
 include('header.php'); 
 
 $where="";
@@ -32,12 +33,6 @@ $lsfasiliti = new data();
 $lsfasiliti->select("tbl_sekolah_fasiliti","*"," fas_sek_id = ".$_SESSION['UKIDSekolah'] );
 $fasiliti = $lsfasiliti->sql;
 ?>
-  <!-- SweetAlert2 -->
-  <link rel="stylesheet" href="plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
-  <!-- Toastr -->
-  <link rel="stylesheet" href="plugins/toastr/toastr.min.css">
-
-
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
@@ -90,9 +85,9 @@ $fasiliti = $lsfasiliti->sql;
             <td><?php echo $bil++; ?></td>
             <td><?php echo $row['fas_nama']; ?></td>
             <td><?php echo $row['temp_kegunaan']; ?></td>
-            <td><?php echo date('d-m-Y', strtotime($row['temp_sdate'])); ?></td>
-            <td><?php echo date('d-m-Y', strtotime($row['temp_edate'])); ?></td>
-            <td><?php echo $row['temp_status']; ?></td>
+            <td><?php echo date('d-m-Y H:i', strtotime($row['temp_sdate'])); ?></td>
+            <td><?php echo date('d-m-Y H:i', strtotime($row['temp_edate'])); ?></td>
+            <td><?php echo tempahanStatus($row['temp_status']); ?></td>
             <td>
               <a href="#" id="<?php echo $row['tempahan_id']; ?>" class="btn btn-xs btn-info edit_data" title="Kemaskini">
                   <i class="fas fa-edit"></i>
@@ -155,13 +150,16 @@ $fasiliti = $lsfasiliti->sql;
               </div>
             </div>
             <div class="form-group row">              
-              <label for="poskod" class="col-sm-3 col-form-label">Tarikh Mula/Tamat</label>               
-              <div class="col-sm-5 mt-1">
-                <input type="text" class="form-control" id="temp_sdate" name="temp_sdate" placeholder="Tarikh Mula">
-              </div>
-              <div class="col-sm-4 mt-1">
-                <input type="text" class="form-control" id="temp_edate" name="temp_edate" placeholder="Tarikh Tamat">
-              </div>                
+              <label for="poskod" class="col-sm-3 col-form-label">Tarikh</label>               
+              <div class="col-sm-9 mt-1">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="far fa-clock"></i></span>
+                    </div>
+                    <input type="text" class="form-control float-right" id="temp_comdate" name="temp_comdate">
+                  </div>
+                <!-- <input type="text" class="form-control" id="temp_sdate" name="temp_sdate" placeholder="Tarikh Mula"> -->
+              </div>               
             </div>
             <div class="form-group row">              
               <label for="poskod" class="col-sm-3 col-form-label">Status</label>               
@@ -186,12 +184,12 @@ $fasiliti = $lsfasiliti->sql;
     <!-- /.modal-dialog -->
   </div>
 
-  <div class="modal fade" id="padam_sekolah">
+  <div class="modal fade" id="padam_tempahan">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
         <form class="form-horizontal" action="" method="post" id="delete_form">
           <div class="modal-header">
-            <h4 class="modal-title">Padam Rekod</h4>
+            <h4 class="modal-title">Padam Tempahan</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -203,7 +201,7 @@ $fasiliti = $lsfasiliti->sql;
           </div>
           <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-default" data-dismiss="modal">Tidak</button>
-            <button type="submit" id="btn_del_sekolah" class="btn btn-danger">Ya</button>
+            <button type="submit" id="btn_del_tempahan" class="btn btn-danger">Ya</button>
           </div>
         </form>
       </div>
@@ -231,7 +229,9 @@ $fasiliti = $lsfasiliti->sql;
 <script src="plugins/sweetalert2/sweetalert2.min.js"></script>
 <!-- Toastr -->
 <script src="plugins/toastr/toastr.min.js"></script>
+
 <script>
+
 $(document).ready(function(){ 
   $('#add').click(function(){  
     $('#insert').html("Tambah");  
@@ -244,23 +244,21 @@ $(document).ready(function(){
     var tempahan_id = $(this).attr("id");
     $('#delete_form')[0].reset();    
     $('#del_tempahan_id').val(tempahan_id);
-    $('#padam_sekolah').modal('show');  
+    $('#padam_tempahan').modal('show');  
   }); 
   
   $(document).on('click', '.edit_data', function(){  
-    var tempahan_id = $(this).attr("id");  
-    // alert(tempahan_id);
+    var tempahan_id = $(this).attr("id");
     $.ajax({  
       url:"utiliti/data_tempahan.php",  
       method:"POST",  
-      data:{tempahan_id:tempahan_id},  
+      data:{tempahan_id:tempahan_id},
       dataType: "json",  
       success:function(data){ 
         $('#tempahan_id').val(data.tempahan_id); 
         $('#temp_fasiliti_id').val(data.temp_fasiliti_id);  
         $('#temp_kegunaan').val(data.temp_kegunaan);  
-        $('#temp_sdate').val(data.temp_sdate);  
-        $('#temp_edate').val(data.temp_edate);  
+        $('#temp_comdate').val(data.combdate);
         $('#temp_status').val(data.temp_status);
         $('#insert').html("Kemaskini");  
         $('#add_tempahan').modal('show');  
@@ -277,9 +275,9 @@ $(document).ready(function(){
     {  
       alert("Sila masukkan Tujuan");  
     }  
-    else if($('#temp_sdate').val() == '')  
+    else if($('#temp_combdate').val() == '')  
     {  
-      alert("Sila masukkan tarikh mula");  
+      alert("Sila masukkan tarikh");  
     }  
     else if($('#temp_edate').val() == '')  
     {  
@@ -316,39 +314,34 @@ $(document).ready(function(){
   $('#delete_form').on("submit", function(event){  
     event.preventDefault();   
     $.ajax({  
-      url:"utiliti/sekolah_controller.php",  
+      url:"utiliti/tempahan_controller.php",  
       method:"POST",  
       data:$('#delete_form').serialize(),   
       success:function(data){  
         $('#delete_form')[0].reset();  
-        $('#padam_sekolah').modal('hide');  
-        $('#sekolah_table').html(data);
+        $('#padam_tempahan').modal('hide');  
+        $('#tempahan_table').html(data);
         $("#example1").DataTable({
           "responsive": true, "lengthChange": false, "autoWidth": false,
           "buttons": ["excel", "pdf", "print"]
         }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)'); 
         toastr.error('Rekod berjaya dipadam');
-
       }  
     });   
-  });
-  $(document).on('click', '.view_data', function(){  
-    var employee_id = $(this).attr("id");  
-    if(employee_id != '')  
-    {  
-      $.ajax({  
-        url:"select.php",  
-        method:"POST",  
-        data:{employee_id:employee_id},  
-        success:function(data){  
-          $('#employee_detail').html(data);  
-          $('#dataModal').modal('show');  
-        }  
-      });  
-    }            
-  }); 
-   
+  });   
 });  
+
+$(function () {
+
+  //Date range picker with time picker
+  $('#temp_comdate').daterangepicker({
+    timePicker: true,
+    timePickerIncrement: 30,
+    locale: {
+      format: 'MM/DD/YYYY hh:mmA'
+    }
+  })
+});
 </script>
 
 

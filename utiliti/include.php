@@ -9,6 +9,17 @@ function userRole($role){
         return 'Sekolah';
     else
         return 'Tiada Peranan';
+}  
+
+function tempahanStatus($id){
+    if($id==1)
+        return 'Baru';
+    else if($id==2)
+        return 'Sah';
+    else if($id==3)
+        return 'Tidak Sah';
+    else
+        return 'Batal';
 }   
 
 ?>

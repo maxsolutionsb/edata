@@ -1,6 +1,7 @@
 <?php
 session_start();  
 include('data.php');
+include('include.php');
 
 $where="";
 if($_SESSION['UKIDRole']==1){
@@ -17,20 +18,8 @@ else{
 if(!empty($_POST)){
     if(isset($_POST['del_action'])){
 
-        //Get file name to delete
-        $itrmfile = new data();
-        $itrmfile->select("tbl_tempahan","*","tempahan_id = ".$_POST["del_tempahan_id"]);
-        $tempahan = $itrmfile->sql;
-
-        $row = mysqli_fetch_assoc($tempahan);
-        $filetodelete = $row['inter_file'];
-
         $itemp = new data();
-        $itemp->delete("tbl_tempahan", "interim_id = ".$_POST["del_interim_id"] );
-
-        $file_to_delete = $uploadFileDir.$filetodelete = $row['inter_file'];
-        unlink($file_to_delete);
-
+        $itemp->delete("tbl_tempahan", "tempahan_id = ".$_POST["del_tempahan_id"] );
 
     }
     else{
@@ -38,8 +27,9 @@ if(!empty($_POST)){
         $message = '';
         $temp_fasiliti_id = $_POST["temp_fasiliti_id"];  
         $temp_kegunaan = $_POST["temp_kegunaan"];
-        $temp_sdate = date('Y-m-d', strtotime($_POST["temp_sdate"]));
-        $temp_edate = date('Y-m-d', strtotime($_POST["temp_edate"]));
+        $date_arr = explode(" - ", $_POST["temp_comdate"]);
+        $temp_sdate = date('Y-m-d H:i:00', strtotime($date_arr[0]));
+        $temp_edate = date('Y-m-d H:i:00', strtotime($date_arr[1]));
         $temp_status = $_POST["temp_status"];     
         
         if($_POST["tempahan_id"] != '')  
@@ -106,9 +96,9 @@ if(!empty($_POST)){
                 <td>'.$bil++.'</td>
                 <td>'.$row['fas_nama'].'</td>
                 <td>'.$row['temp_kegunaan'].'</td>
-                <td>'.date('d-m-Y', strtotime($row['temp_sdate'])).'</td>
-                <td>'.date('d-m-Y', strtotime($row['temp_edate'])).'</td>
-                <td>'.$row['temp_status'].'</td>
+                <td>'.date('d-m-Y H:ia', strtotime($row['temp_sdate'])).'</td>
+                <td>'.date('d-m-Y H:ia', strtotime($row['temp_edate'])).'</td>
+                <td>'.tempahanStatus($row['temp_status']).'</td>
                 <td>
                 <a href="#" id="'.$row['tempahan_id'].'" class="btn btn-xs btn-info edit_data">
                     <i class="fas fa-edit"></i>
