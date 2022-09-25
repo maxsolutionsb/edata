@@ -29,9 +29,9 @@ tbl_sekolah.sek_ppd_id,
 tbl_sekolah_fasiliti.fas_sek_id", $where);
 $tempahan = $list->sql;
 
-$lsfasiliti = new data();
-$lsfasiliti->select("tbl_sekolah_fasiliti","*"," fas_sek_id = ".$_SESSION['UKIDSekolah'] );
-$fasiliti = $lsfasiliti->sql;
+// $lsfasiliti = new data();
+// $lsfasiliti->select("tbl_sekolah_fasiliti","*"," fas_sek_id = ".$_SESSION['UKIDSekolah'] );
+// $fasiliti = $lsfasiliti->sql;
 ?>
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -53,14 +53,10 @@ $fasiliti = $lsfasiliti->sql;
     <section class="content">
       <div class="container-fluid">
       <div class="row">
-        <div class="col-sm-12">
-      <?php
-      if($_SESSION['UKIDRole']!=3){ ?>
-    
+        <div class="col-sm-12">    
         <div class="text-right">  
             <button type="button" name="add" id="add" class="btn btn-success">Tambah</button>  
         </div>
-      <?php } ?>  
         <br />
         <div id="tempahan_table">
         <table id="example1" class="table table-bordered table-striped">
@@ -123,6 +119,7 @@ $fasiliti = $lsfasiliti->sql;
       <div class="modal-content">
         <form class="form-horizontal" action="" method="post" id="insert_form">
           <input type="hidden" name="tempahan_id" id="tempahan_id">
+          <input type="hidden" name="user_role" id="user_role" valuoe="<?php echo $_SESSION['UKIDRole']; ?>">
           <div class="modal-header">
             <h4 class="modal-title">Maklumat Tempahan</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -130,17 +127,35 @@ $fasiliti = $lsfasiliti->sql;
             </button>
           </div>
           <div class="modal-body">
+          <div class="form-group row">
+              <label for="no_telefon" class="col-sm-3 col-form-label">PPD</label>
+              <div class="col-sm-9">
+                <select class="form-control select2" id="ppd" name="ppd" style="width: 100%;">
+                  <option selected="selected" value="">--Sila  pilih--</option>
+                  <option value="1000">PPD Bangsar Pudu</option>
+                  <option value="1001">PPD Keramat</option>
+                  <option value="1002">PPD Sentul</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+                <label for="temp_sek_id" class="col-sm-3 col-form-label">Sekolah</label>
+                <div class="col-sm-9">                    
+                    <div id="optiondata">
+                    <select class="form-control select2" style="width: 100%;">
+                      <option selected="selected" value="">--Sila  pilih--</option>
+                    </select>
+                    </div>
+                </div>                
+            </div>
             <div class="form-group row">
               <label for="temp_fasiliti_id" class="col-sm-3 col-form-label">Fasiliti</label>
               <div class="col-sm-9">
-                <select class="form-control select2" id="temp_fasiliti_id" name="temp_fasiliti_id" style="width: 100%;">
+              <div id="optionfasiliti">
+                <select class="form-control select2" style="width: 100%;">
                   <option selected="selected" value="">--Sila  pilih--</option>
-                  <?php
-                  while($row = mysqli_fetch_assoc($fasiliti)){
-                    echo '<option value="'.$row['fasiliti_id'].'">'.$row['fas_nama'].'</option>';
-                  }
-                  ?>
                 </select>
+              </div>
               </div>
             </div>
             <div class="form-group row">
@@ -229,16 +244,45 @@ $fasiliti = $lsfasiliti->sql;
 <script src="plugins/sweetalert2/sweetalert2.min.js"></script>
 <!-- Toastr -->
 <script src="plugins/toastr/toastr.min.js"></script>
-
 <script>
 
 $(document).ready(function(){ 
+  
   $('#add').click(function(){  
     $('#insert').html("Tambah");  
     $('#insert_form')[0].reset(); 
     $('#add_tempahan').modal('show');  
   });
+
+  $('#ppd').change(function(){ 
+    let ppd_id = $(this).val();
+    // alert(ppd_id);
+    $.ajax({  
+      url:"utiliti/sekolahoption.php",  
+      method:"POST",  
+      data:{ppd_id:ppd_id},
+      // dataType: "json",  
+      success:function(data){ 
+        $('#optiondata').html(data);
+        
+        $('#temp_sek_id').change(function(){ 
+          let sek_id = $(this).val();
+          // alert("sek_id");
+          $.ajax({  
+            url:"utiliti/fasilitoption.php",  
+            method:"POST",  
+            data:{sek_id:sek_id},
+            // dataType: "json",  
+            success:function(data){ 
+              $('#optionfasiliti').html(data);
+            }  
+          });
+        });
   
+      }  
+    });
+  });
+
   // DELETE RECORD
   $(document).on('click', '.del_data', function(){ 
     var tempahan_id = $(this).attr("id");
@@ -256,6 +300,8 @@ $(document).ready(function(){
       dataType: "json",  
       success:function(data){ 
         $('#tempahan_id').val(data.tempahan_id); 
+        $('#ppd').val(data.ppd); 
+        $('#temp_sek_id').val(data.sek_id); 
         $('#temp_fasiliti_id').val(data.temp_fasiliti_id);  
         $('#temp_kegunaan').val(data.temp_kegunaan);  
         $('#temp_comdate').val(data.combdate);
