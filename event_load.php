@@ -4,13 +4,13 @@ include 'utiliti/data.php';
 
 $where="";
 if($_SESSION['UKIDRole']==1){
-  $where = " 1=1 ORDER BY tbl_tempahan.temp_sdate ";
+  $where = " temp_status = 2 ORDER BY tbl_tempahan.temp_sdate ";
 }
 else if($_SESSION['UKIDRole']==2){
-  $where = "tbl_sekolah.sek_ppd_id = ".$_SESSION['UKIDPPD']." ORDER BY tbl_tempahan.temp_sdate";
+  $where = "tbl_sekolah.sek_ppd_id = ".$_SESSION['UKIDPPD']." and temp_status = 2 ORDER BY tbl_tempahan.temp_sdate";
 }
 else{
-  $where = "tbl_sekolah.sekolah_id = ".$_SESSION['UKIDSekolah']." ORDER BY tbl_tempahan.temp_sdate";
+  $where = "tbl_sekolah.sekolah_id = ".$_SESSION['UKIDSekolah']." and temp_status = 2 ORDER BY tbl_tempahan.temp_sdate";
 }
 
 $calitem = new data();
