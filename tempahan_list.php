@@ -29,9 +29,13 @@ tbl_sekolah.sek_ppd_id,
 tbl_sekolah_fasiliti.fas_sek_id", $where);
 $tempahan = $list->sql;
 
-// $lsfasiliti = new data();
-// $lsfasiliti->select("tbl_sekolah_fasiliti","*"," fas_sek_id = ".$_SESSION['UKIDSekolah'] );
-// $fasiliti = $lsfasiliti->sql;
+$lsfasiliti = new data();
+$lsfasiliti->select("tbl_sekolah_fasiliti");
+$fasiliti = $lsfasiliti->sql;
+
+$lssekolah = new data();
+$lssekolah->select("tbl_sekolah");
+$sekolah = $lssekolah->sql;
 ?>
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -142,8 +146,13 @@ $tempahan = $list->sql;
                 <label for="temp_sek_id" class="col-sm-3 col-form-label">Sekolah</label>
                 <div class="col-sm-9">                    
                     <div id="optiondata">
-                    <select class="form-control select2" style="width: 100%;">
+                    <select name="temp_sek_id" id="temp_sek_id" class="form-control select2" style="width: 100%;">
                       <option selected="selected" value="">--Sila  pilih--</option>
+                      <?php
+                      while($row = mysqli_fetch_assoc($sekolah)){
+                        echo '<option value="'.$row['sekolah_id'].'">'.$row['sek_nama'].'</option>';
+                      }
+                      ?>
                     </select>
                     </div>
                 </div>                
@@ -152,8 +161,13 @@ $tempahan = $list->sql;
               <label for="temp_fasiliti_id" class="col-sm-3 col-form-label">Fasiliti</label>
               <div class="col-sm-9">
               <div id="optionfasiliti">
-                <select class="form-control select2" style="width: 100%;">
+                <select name="temp_fasiliti_id" id="temp_fasiliti_id" class="form-control select2" style="width: 100%;">
                   <option selected="selected" value="">--Sila  pilih--</option>
+                  <?php
+                  while($row = mysqli_fetch_assoc($fasiliti)){
+                    echo '<option value="'.$row['fasiliti_id'].'">'.$row['fas_nama'].'</option>';
+                  }
+                  ?>
                 </select>
               </div>
               </div>
@@ -247,7 +261,8 @@ $tempahan = $list->sql;
 <script>
 
 $(document).ready(function(){ 
-  
+
+ 
   $('#add').click(function(){  
     $('#insert').html("Tambah");  
     $('#insert_form')[0].reset(); 
