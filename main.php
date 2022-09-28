@@ -155,7 +155,7 @@ if($curstat['bilKomp']==null && $curstat['makKomp']==null && $curstat['pusAkses'
                        alt="User profile picture">
                 </div>
 
-                <h3 class="profile-username text-center"><?php echo strtoupper($rowuser['user_nama']); echo $statistik->num_rows; ?></h3>
+                <h3 class="profile-username text-center"><?php echo strtoupper($rowuser['user_nama']); ?></h3>
 
                 <p class="text-muted text-center"><?php echo userRole($rowuser['pr_role']); ?></p>
 
